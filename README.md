@@ -19,7 +19,7 @@ Este repositorio contiene dos aplicaciones desarrolladas en el marco del trabajo
    Aplicación completa previamente entregada como proyecto grupal, a la que se le agregaron mejoras:  
    - Se implementó la **internacionalización completa** de la app.  
    - A través de un **mapa interactivo**, el usuario puede elegir un país y la aplicación cambia automáticamente el idioma de todos los textos.  
-   - Se mantiene la funcionalidad original (gestión de menú, bebidas, promociones y reservas).  
+   - Se mantiene la funcionalidad original.  
 
 ---
 

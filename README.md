@@ -28,9 +28,9 @@ Este repositorio contiene dos aplicaciones desarrolladas en el marco del trabajo
 carraro_julian_internacionalizacion_2025/
 │
 ├── APKS/ # Contiene los APKs generados
-│ ├── tp_final.apk # Versión final grupal original (MenúGo)
-│ ├── tp_modificado.apk# MenúGo con internacionalización agregada
-│ └── prototipo.apk # InterProto (prototipo individual)
+│ ├── app-menugo.apk # Versión final grupal original (MenúGo)
+│ ├── app-internalizacion-menugo.apk # MenúGo con internacionalización agregada de forma individual
+│ └── app-interproto.apk # InterProto (prototipo individual)
 │
 ├── InterProto/ # Código fuente del prototipo
 │

@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar style="--background: #f4c060;">
+    <ion-title >Reservas</ion-title>
+    <ion-buttons (click)="back()" slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="reservas-content">
+  <!-- <div class="background-pattern"></div> -->
+
+  <div class="card-container">
+
+    <div class="formulario-reserva">
+      <!-- Fecha -->
+      <ion-item lines="none" class="item-formulario">
+        <ion-label position="stacked" class="etiqueta">
+          <ion-icon name="calendar" slot="start"></ion-icon>
+          Fecha
+        </ion-label>
+        <ion-input type="date" class="input-formulario" [value]="fecha" (ionChange)="onDateChange($event)"></ion-input>
+      </ion-item>
+
+      <!-- Franja horaria -->
+      <ion-item lines="none" class="item-formulario">
+        <ion-label position="stacked" class="etiqueta">
+          <ion-icon name="time" slot="start"></ion-icon>
+          Horario
+        </ion-label>
+        <ion-select  cancelText="Cancelar" interface="action-sheet" class="select-formulario" [value]="franja" style="min-height: 80px;"
+          (ionChange)="onFranjaChange($event)">
+          <ion-select-option *ngFor="let slot of timeSlots" [value]="slot.value">
+            {{ slot.label }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-button expand="block" class="boton-reservar" (click)="buscarDisponibles()" [disabled]="loading">
+        Buscar Mesas Disponibles
+      </ion-button>
+
+      <div *ngIf="loading" class="item-cargando">
+        <ion-spinner color="primary"></ion-spinner>
+        <ion-label>Cargando mesas disponibles...</ion-label>
+      </div>
+    </div>
+
+    <div *ngIf="mesasDisponibles.length" class="lista-mesas">
+      <ion-list-header class="list-header">
+        <ion-icon name="restaurant" class="icon-header"></ion-icon>
+        Mesas disponibles
+      </ion-list-header>
+
+      <div class="mesa-card" *ngFor="let mesa of mesasDisponibles">
+        <div class="mesa-info">
+          <div class="mesa-header">
+            <h3>Mesa {{ mesa.numero }}</h3>
+            <!-- <div class="mesa-tipo">{{ mesa.tipo }}</div> -->
+          </div>
+          <div class="mesa-details">
+            <div class="detail-item">
+              <ion-icon name="people"></ion-icon>
+              <span style="font-size: 1rem;">{{ mesa.cantComensales }} comensales</span>
+            </div>
+          </div>
+        </div>
+        <ion-button fill="solid" color="success" size="small" style="height: 80px; width: 120px;" (click)="reservar(mesa)" [disabled]="loading">
+          Reservar
+        </ion-button>
+      </div>
+    </div>
+
+    <div *ngIf="!loading && mesasDisponibles.length === 0 && busqueda" class="no-data">
+      <ion-icon name="sad" class="icon-sad"></ion-icon>
+      <p>No hay mesas disponibles en esa franja horaria.</p>
+      <p>Prueba con otra fecha u horario.</p>
+    </div>
+    <div *ngIf="!(!loading && mesasDisponibles.length === 0 && busqueda)" class="no-data">
+      <ion-icon name="sad" class="icon-sad"></ion-icon>
+      <p style="color: rgb(87, 87, 87); font-size: 1.2rem;">Ingrese los datos requeridos para encontrar su reserva.</p>
+      <!-- <p>Prueba con otra fecha u horario.</p> -->
+    </div>
+  </div>
+</ion-content>

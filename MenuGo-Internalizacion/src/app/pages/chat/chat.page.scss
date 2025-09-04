@@ -1,0 +1,161 @@
+.theme-b {
+    --ion-color-primary:    #D84315;
+    --ion-toolbar-background: var(--ion-color-primary);
+    --msg-self-bg:  #ffab91;
+    --msg-other-bg: #bf360c; 
+}
+
+
+ion-content.theme-b {
+  --background: #ffd693;
+  height: 90%; 
+}
+
+
+.messages {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+
+  &.self {
+    align-self: flex-end;
+    text-align: right;
+  }
+  &.other {
+    align-self: flex-start;
+    text-align: left;
+  }
+}
+
+.bubble {
+  width: 200px;        
+  background: var(--msg-other-bg);
+  color: #000;
+  padding: 0.75rem;       
+  padding-bottom: 1.5rem;  
+  border-radius: 1rem;
+  position: relative;         
+  box-sizing: border-box;     
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow: hidden;    
+}
+
+
+.message.self .bubble {
+  width: 180px; 
+  align-self: flex-start;   
+  background: var(--msg-self-bg);
+  color: #000;
+  padding-bottom: 0.75rem;
+  padding: 0.75rem;
+}
+
+.message.other .bubble {
+  padding: 0.75rem;
+  padding-bottom: 1.5rem;
+  width: 200px;
+  background: var(--msg-other-bg);
+}
+
+.bubble-author {
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+
+.bubble-text {
+  font-size: 1rem;
+  text-align: left;
+}
+
+
+.bubble-meta {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.75rem;
+  font-size: 0.75rem;
+  color: #444;
+  margin: 0;                 
+  white-space: nowrap;        
+}
+
+
+.self-meta {
+  font-size: 0.75rem;
+  color: #444;
+  margin-top: 0.5rem;
+  align-self: flex-end;
+  padding-right: 10px;
+  margin-bottom: -8px;
+}
+
+
+.self .bubble {
+  background: var(--msg-self-bg);
+  color: #000;
+}
+
+.footer-toolbar {
+  --min-height: 50px;       
+  --max-height: 50px;
+  height: 50px;
+  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.footer-input {
+  flex: 1;
+  margin: 0 0.5rem;
+  height: auto;
+  --padding-start: 0.5rem;
+  --padding-end: 0.5rem;
+  --padding-top: 0.25rem;
+  --padding-bottom: 0.25rem;
+  border-radius: 20px;
+  background: #ffd29e5e;
+}
+
+.footer-toolbar ion-button {
+  --padding: 0.25rem;
+  width: 43px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.emoji-btn ion-icon,
+.send-btn ion-icon {
+  font-size: 20px;
+  color: #fff;
+}
+
+.fab-group {
+  position: fixed;
+  top: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+  left: 1rem;
+  display: flex;
+  gap: 0.5rem;     
+  z-index: 1000;
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+

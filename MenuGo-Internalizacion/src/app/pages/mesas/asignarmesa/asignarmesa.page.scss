@@ -1,0 +1,231 @@
+.fondo-asignacion {
+  --background: #f1e2c9;
+  position: relative;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.tarjeta-asignacion {
+  background: #c68b3e4f;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(41, 50, 65, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.decoracion-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg, #3498db 0%, #2ecc71 100%);
+}
+
+.encabezado {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-top: 1rem;
+  background: rgb(198 139 62 / 19%);
+  border-radius: 12px;
+  border: 1px solid #ff9100;
+  padding: 0px;
+  margin: 0px;
+  .titulo {
+    color: #2c3e50;
+    font-size: 2.8rem;
+    margin: 15px;
+    font-weight: 600;
+  }
+  h1{
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .subtitulo {
+    color: #343b3c;
+    font-size: 1.5rem;
+    margin: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    strong {
+      color: #2c3e50;
+    }
+  }
+}
+
+.lista-clientes,
+.lista-mesas {
+  margin-top: 2rem;
+
+  h3 {
+    color: #34495e;
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+}
+
+/* Estilo simplificado para las mesas */
+.grid-mesas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.card-mesa-simple {
+  background: #cdf986;
+  border-radius: 12px;
+  padding: 1.5rem 0.5rem;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid #ecf0f1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1/1;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    background: #bff4c5;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+.numero-mesa {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.info-mesa {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: #7f8c8d;
+
+  ion-icon {
+    font-size: 0.9rem;
+  }
+}
+
+/* Resto de estilos se mantienen igual que en la versión anterior */
+.lista-estilizada {
+  overflow: hidden;
+  height: 65vh;
+  background: rgb(198 139 62 / 19%);
+  border-radius: 12px;
+  border: 1px solid #ff9100;
+  padding: 13px;
+}
+
+.item-cliente {
+  --background: rgba(241, 242, 246, 0.7);
+  --border-radius: 12px;
+  margin-bottom: 0.8rem;
+  --padding-start: 1rem;
+  --inner-padding-end: 1rem;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateX(5px);
+    --background: rgba(189, 195, 199, 0.3);
+  }
+
+  ion-avatar {
+    width: 40px;
+    height: 40px;
+    background: #dfe6e9;
+  }
+}
+
+.boton-volver {
+  --color: #7f8c8d;
+  margin-top: 1.5rem;
+  font-weight: 500;
+
+  ion-icon {
+    font-size: 1.2rem;
+  }
+}
+
+.spinner-asignacion {
+  --color: #FF6600;
+  width: 50px;
+  height: 50px;
+}
+
+.div-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(41, 50, 65, 0.5);
+  z-index: 9999;
+}
+
+@media (max-width: 768px) {
+  .grid-mesas {
+    grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+  }
+
+  .numero-mesa {
+    font-size: 1.8rem;
+  }
+}
+
+.mapa-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  height: 36%;
+  overflow: hidden;
+  z-index: 1001;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}

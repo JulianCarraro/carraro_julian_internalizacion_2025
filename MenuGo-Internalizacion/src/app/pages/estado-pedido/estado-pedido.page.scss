@@ -1,0 +1,334 @@
+/* Variables de color */
+$orange-primary: #FF6600;
+$orange-dark: #E65C00;
+$black: #1B1B1B;
+$white: #f1e2c9;
+$gray-light: #c4b8a2;
+$gray-medium: #918879;
+$success-color: #27ae60;
+$warning-color: #f39c12;
+$danger-color: #e74c3c;
+
+.order-tracking-content {
+  --background: #{$gray-light};
+  --padding: 16px;
+  display: flex;
+  flex-direction: column;
+  
+  .loading-container,
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    padding: 20px;
+    
+    ion-spinner {
+      width: 48px;
+      height: 48px;
+      --color: #{$orange-primary};
+      margin-bottom: 16px;
+    }
+    
+    p {
+      color: $black;
+      margin-bottom: 20px;
+    }
+  }
+  
+  .error-container {
+    ion-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.order-card {
+  background: $white;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin: 16px;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.order-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  border-bottom: 1px solid $gray-medium;
+  padding-bottom: 16px;
+  
+  .order-icon {
+    font-size: 32px;
+    color: $orange-primary;
+    margin-right: 12px;
+  }
+  
+  h2 {
+    flex: 1;
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: $black;
+  }
+  
+  ion-badge {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 20px;
+  }
+}
+
+.progress-container {
+  margin-bottom: 24px;
+  
+  .progress-bar {
+    height: 12px;
+    background: $gray-light;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    
+    .progress-fill {
+      height: 100%;
+      background: $orange-primary;
+      border-radius: 6px;
+      transition: width 0.5s ease;
+    }
+  }
+  
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    
+    .progress-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: $gray-medium;
+      font-size: 0.8rem;
+      position: relative;
+      flex: 1;
+      
+      ion-icon {
+        font-size: 1.5rem;
+        margin-bottom: 4px;
+      }
+      
+      &:before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: $gray-medium;
+        z-index: -1;
+      }
+      
+      &:first-child:before {
+        left: 50%;
+      }
+      
+      &:last-child:before {
+        right: 50%;
+      }
+      
+      &.active {
+        color: $orange-primary;
+        
+        ion-icon {
+          color: $orange-primary;
+        }
+      }
+    }
+  }
+}
+
+.time-estimation {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 102, 0, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  
+  ion-icon {
+    font-size: 2.5rem;
+    color: $orange-primary;
+    margin-right: 16px;
+  }
+  
+  h3 {
+    margin: 0 0 4px 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: $black;
+  }
+  
+  p {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $orange-primary;
+  }
+}
+
+.order-details {
+  margin-bottom: 24px;
+  
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $black;
+    margin: 0 0 16px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid $gray-medium;
+  }
+  
+  .order-items {
+    .order-item {
+      padding: 12px 0;
+      border-bottom: 1px solid $gray-light;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      .item-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        
+        .item-name {
+          flex: 1;
+          font-weight: 500;
+          color: $black;
+        }
+        
+        .item-status {
+          font-size: 0.8rem;
+          font-weight: 600;
+          padding: 4px 10px;
+          border-radius: 12px;
+        }
+      }
+      
+      .item-progress {
+        display: flex;
+        align-items: center;
+        
+        .item-time {
+          font-size: 0.9rem;
+          color: $orange-primary;
+          font-weight: 600;
+          min-width: 50px;
+          margin-right: 12px;
+        }
+        
+        .item-progress-bar {
+          flex: 1;
+          height: 8px;
+          background: $gray-light;
+          border-radius: 4px;
+          overflow: hidden;
+          
+          .item-progress-fill {
+            height: 100%;
+            background: $orange-primary;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+          }
+        }
+      }
+    }
+  }
+}
+
+.order-summary {
+  background: $gray-light;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $black;
+    margin: 0 0 16px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid $gray-medium;
+  }
+  
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 1rem;
+    color: $black;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    &.total {
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding-top: 12px;
+      border-top: 1px solid $gray-medium;
+      margin-top: 8px;
+    }
+  }
+}
+
+.order-actions {
+  padding: 0 16px 16px;
+  
+  ion-button {
+    --border-color: #{$orange-primary};
+    --color: #{$orange-primary};
+    --border-radius: 12px;
+    --border-width: 2px;
+    font-weight: 600;
+    height: 50px;
+    
+    ion-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+.mapa-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  height: 36%;
+  overflow: hidden;
+  z-index: 1001;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}

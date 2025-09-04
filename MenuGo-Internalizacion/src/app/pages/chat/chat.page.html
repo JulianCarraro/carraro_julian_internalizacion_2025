@@ -1,0 +1,112 @@
+<ion-content #content [ngClass]="themeClass">
+
+  <ion-spinner
+    *ngIf="loading"
+    name="crescent"
+    class="loading-spinner">
+  </ion-spinner>
+
+
+  <div *ngIf="!loading" class="messages">
+    
+
+    <div *ngFor="let msg of messages" 
+        class="message" 
+        [ngClass]="{'self': msg.author === clienteNombre, 'other': msg.author !== clienteNombre}">
+      
+      <!-- Nombre y fecha arriba solo si es de otro -->
+      <!-- <div *ngIf="msg.author !== userEmail" class="meta">
+        <span class="author">{{ msg.author }}</span>
+        <span class="date">{{ msg.date.toDate() | date:'dd/MM/yyyy, h:mm a' }}</span>
+      </div> -->
+
+      <div class="bubble">
+
+        <div *ngIf="msg.author !== clienteNombre" class="bubble-author">
+          {{ msg.author }}
+        </div>
+
+        <div class="bubble-text">
+          {{ msg.text }}
+        </div>
+
+        <div *ngIf="msg.author !== clienteNombre" class="bubble-meta">
+          {{
+              ( msg.clientDate
+                || ( msg.date?.toDate
+                    ? msg.date.toDate()
+                    : msg.date
+                  )
+              )
+              | date:'dd/MM/yyyy, h:mm a':'-0300'
+          }}
+        </div>
+
+        <div *ngIf="msg.author === clienteNombre" class="bubble self-bubble">
+          <div class="bubble-meta self-meta">
+            {{
+              ( msg.clientDate
+                || ( msg.date?.toDate
+                    ? msg.date.toDate()
+                    : msg.date
+                  )
+              )
+              | date:'dd/MM/yyyy, h:mm a':'-0300'
+            }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Fecha debajo si es propio -->
+      <!-- <div *ngIf="msg.author === userEmail" class="meta self-date">
+        <span class="date">{{ msg.date.toDate() | date:'dd/MM/yyyy, h:mm a' }}</span>
+      </div> -->
+
+
+    </div>
+
+
+  </div>
+
+  <div class="fab-group">
+      <ion-fab-button 
+        color="dark" 
+        class="logout-fab"
+        (click)="logout(); $event.stopPropagation()"
+        style="width: 40px; height: 40px;"
+      >
+        <img src="/assets/logocerrarsesion.png" alt="Cerrar sesión" style="width:24px; height:24px;" />
+      </ion-fab-button>
+
+      <ion-fab-button 
+        color="dark" 
+        class="logout-fab"
+        (click)="logout(); $event.stopPropagation()"
+        style="width: 40px; height: 40px;"
+      >
+        <img src="/assets/atras.PNG" alt="Atras" style="width:50px; height:50px;" />
+      </ion-fab-button>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar class="footer-toolbar" [ngClass]="themeClass">
+    <!-- Input de mensaje -->
+    <ion-input
+      #msgInput
+      class="footer-input"
+      [placeholder]="textos[currentLang].placeholders.escribir"
+      [(ngModel)]="newMessage"
+      (keydown.enter)="send()"
+      (ionFocus)="onInputFocus()"
+      (click)="onInputFocus()">
+    </ion-input>
+
+    <!-- Botón de enviar -->
+    <ion-buttons slot="end">
+      <ion-button fill="clear" class="send-btn" (click)="send()">
+        <ion-icon name="send-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

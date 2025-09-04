@@ -1,0 +1,60 @@
+/* Variables de color */
+$orange-primary: #FF6600;
+$orange-dark: #E65C00;
+$black: #1B1B1B;
+$white: #FFFFFF;
+$gray-light: #F5F5F5;
+
+
+.button-providers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  button {
+    background: transparent;
+    font-family: inherit;
+    border: 1px solid rgb(120, 120, 120);
+    width: 100%;
+    max-width: 250px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    min-height: 48px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all ease-in 0.25s;
+
+    &:hover {
+      background: var(--text);
+      color: var(--dark-text);
+    }
+
+    svg {
+      margin-right: 20px;
+    }
+  }
+}
+
+.boton-login {
+  --background: #{$orange-primary};
+  --background-activated: #{$orange-dark};
+  --color: #{$white};
+  --box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+  --border-radius: 12px;
+  font-weight: 600;
+  height: 50px;
+  margin-top: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  ion-icon {
+    margin-right: 8px;
+  }
+}

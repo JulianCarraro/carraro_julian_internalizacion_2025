@@ -1,0 +1,272 @@
+<ion-header>
+  <ion-toolbar class="toolbar-financiero header-toolbar" style="--background: #f4c060;">
+    <ion-title>{{ textos[currentLang].header }}</ion-title>
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+      <ion-button (click)="logOut()">
+        <ion-icon name="log-out" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div class="div-spinner" *ngIf="isLoading">
+  <ion-spinner name="circular" class="spinner-login" style="height: 22vh; width: 22vw;"></ion-spinner>
+</div>
+
+<ion-content [fullscreen]="true" class="fondo-financiero"
+  [ngStyle]="{ 'padding-bottom': pedido.length > 0 ? '180px' : '0' }">
+
+  <div class="mapa-modal" *ngIf="mapVisible">
+    <div class="modal-backdrop" (click)="mapVisible = false"></div>
+    <div class="modal-content">
+      <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+      </app-mapaidioma>
+    </div>
+  </div>
+
+  <div class="categoria-menu">
+    <ion-button fill="clear" (click)="cambiarCategoria(-1)" class="flecha izquierda">
+      <ion-icon name="chevron-back-outline"></ion-icon>
+    </ion-button>
+    <ion-label class="categoria-texto">{{ getCategoriaLabel() }}</ion-label>
+    <ion-button fill="clear" (click)="cambiarCategoria(1)" class="flecha derecha">
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div class="carousel-wrapper" [class.no-pedido]="pedido.length === 0">
+
+    <ion-grid class="productos-grid" *ngIf="productoActual">
+      <ion-row>
+        <ion-col>
+          <div class="producto-carousel">
+            <div class="boton-cantidad" *ngIf="!esActivo(productoActual)" (click)="agregarAlPedido(productoActual)">
+              +
+            </div>
+
+            <div class="control-cantidad" *ngIf="esActivo(productoActual)">
+              <button (click)="restarCantidad(productoActual)">-</button>
+              <span>{{ obtenerCantidad(productoActual) }}</span>
+              <button (click)="sumarCantidad(productoActual)">+</button>
+            </div>
+
+            <ion-button fill="clear" class="carousel-flecha izquierda" (click)="cambiarProducto(-1)">
+              <ion-icon name="chevron-back-outline"></ion-icon>
+            </ion-button>
+
+            <ion-card class="producto-card">
+              <swiper-container class="imagen-swiper" [pagination]="true" [navigation]="false" style="height: 300px;">
+                <swiper-slide *ngFor="let foto of productoActual.fotos">
+                  <div style="padding: 5px;">
+                    <img [src]="foto" class="imagen-producto" />
+                  </div>
+                </swiper-slide>
+              </swiper-container>
+
+              <ion-card-header style="padding-top: 0 !important; padding: 0px;">
+                <ion-card-title class="descripcion">{{ productoActual.descripcion }}</ion-card-title>
+                <p style="color: rgb(229, 229, 229); font-size: 1rem; margin: 10px;" *ngIf="productoActual.detalle">
+                  {{productoActual.detalle}}</p>
+                <ion-card-title class="precio" style="margin-left: -26px;">💲{{productoActual.precio}}</ion-card-title>
+              </ion-card-header>
+
+              <ion-card-content class="info-producto">
+                <div class="izquierda">
+                  <!-- <ion-label>⏱️ {{ productoActual.tiempoElaboracion }} min</ion-label> -->
+
+                </div>
+                <div class="derecha">
+                  <ion-label>⏱️ {{ productoActual.tiempoElaboracion }} {{ textos[currentLang].resumen.min }}</ion-label>
+
+                  <!-- <ion-label>💲{{ productoActual.precio }}</ion-label> -->
+                </div>
+              </ion-card-content>
+            </ion-card>
+
+            <ion-button fill="clear" class="carousel-flecha derecha" (click)="cambiarProducto(1)">
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
+
+
+  <!-- Espacio para evitar que el último producto quede oculto detrás del resumen fijo -->
+  <!-- <div style="height: 180px;"></div> -->
+</ion-content>
+
+<!-- Resumen del pedido fijo en la parte inferior -->
+<div class="resumen-pedido-fijo" *ngIf="pedido.length > 0">
+  <div class="resumen-header">
+    <h3 class="resumen-total">{{ textos[currentLang].resumen.precio }} ${{ getTotal() }}</h3>
+    <!-- <h3 class="resumen-total"></h3> -->
+    <p class="resumen-tiempo">⏱️ {{ textos[currentLang].resumen.tiempo }}: {{ getTiempoEstimadoTotal() }}{{ textos[currentLang].resumen.min }}</p>
+  </div>
+
+  <ion-button expand="block" color="success" (click)="mostrarResumen = !mostrarResumen"
+    style="font-size: 16px; font-weight: bold;">
+    🛒 {{ textos[currentLang].resumen.verPedido }} ({{ getCantidadTotal() }} {{ textos[currentLang].resumen.productos }})
+  </ion-button>
+</div>
+
+<!-- Modal de resumen de pedido -->
+<div class="modal-pedido" *ngIf="mostrarResumen">
+  <div class="modal-contenido">
+    <h2>🛒 {{ textos[currentLang].resumen.tuPedido }}</h2>
+
+    <ion-list class="listaProductos">
+      <ion-item class="productoItem" *ngFor="let item of pedido">
+        <ion-label>
+          <h3 style="font-size: 1.4rem;">{{ item.producto.descripcion }}</h3>
+          <p style="font-size: 1rem;">{{ textos[currentLang].resumen.cantidad }}: {{ item.cantidad }} | 
+            {{ textos[currentLang].resumen.subtotal }}: ${{ item.cantidad * item.producto.precio
+            }}</p>
+        </ion-label>
+        <ion-button fill="clear" color="danger" style="font-size: 20px;"
+          (click)="eliminarDelPedido(item.producto)">✕</ion-button>
+      </ion-item>
+    </ion-list>
+
+    <div class="total-resumen">
+      <p style="margin-bottom: 0;">{{ textos[currentLang].resumen.tiempo }}: {{ getTiempoEstimadoTotal() }}{{ textos[currentLang].resumen.min }}</p>
+      <p style="margin-top: 7px;">{{ textos[currentLang].resumen.total }}: ${{ getTotal() }}</p>
+    </div>
+
+    <ion-button expand="block" color="primary" style="height: 45px;" (click)="confirmarPedido()">✅ 
+      {{ textos[currentLang].resumen.confirmar }}</ion-button>
+    <hr style="background: #00000047; margin-bottom: 14px;">
+    <ion-button expand="block" color="danger" style="height: 45px;" (click)="borrarPedido()">🗑️ 
+      {{ textos[currentLang].resumen.borrarTodo }}</ion-button>
+    <ion-button expand="block" fill="clear" style="height: 45px;" (click)="mostrarResumen = false">
+      {{ textos[currentLang].resumen.cerrar }}</ion-button>
+  </div>
+</div>
+
+
+<!-- <ion-header>
+  <ion-toolbar class="toolbar-financiero header-toolbar" style="--background: #f4c060;">
+    <ion-title>Realizar pedido</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logOut()">
+        <ion-icon name="log-out" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="fondo-financiero">
+  <div class="div-spinner" *ngIf="isLoading">
+    <ion-spinner name="circular" class="spinner-login" style="height: 22vh; width: 22vw;"></ion-spinner>
+  </div>
+
+  <div class="categoria-menu">
+    <ion-button fill="clear" (click)="cambiarCategoria(-1)" class="flecha izquierda">
+      <ion-icon name="chevron-back-outline"></ion-icon>
+    </ion-button>
+    <ion-label class="categoria-texto">{{ categoriaSeleccionada }}</ion-label>
+    <ion-button fill="clear" (click)="cambiarCategoria(1)" class="flecha derecha">
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <ion-grid class="productos-grid" *ngIf="productoActual">
+    <ion-row>
+      <ion-col>
+        <div class="producto-carousel">
+          <div class="boton-cantidad" *ngIf="!esActivo(productoActual)" (click)="agregarAlPedido(productoActual)">
+            +
+          </div>
+
+          <div class="control-cantidad" *ngIf="esActivo(productoActual)">
+            <button (click)="restarCantidad(productoActual)">-</button>
+            <span>{{ obtenerCantidad(productoActual) }}</span>
+            <button (click)="sumarCantidad(productoActual)">+</button>
+          </div>
+
+          <ion-button fill="clear" class="carousel-flecha izquierda" (click)="cambiarProducto(-1)">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </ion-button>
+
+          <ion-card class="producto-card">
+            <swiper-container class="imagen-swiper" [pagination]="true" [navigation]="false" style="height: 300px;">
+              <swiper-slide *ngFor="let foto of productoActual.fotos">
+                <div style="padding: 5px;">
+                  <img [src]="foto" class="imagen-producto" />
+                </div>
+              </swiper-slide>
+            </swiper-container>
+
+            <ion-card-header style="padding-top: 0 !important; padding: 0px;">
+              <ion-card-title class="descripcion">{{ productoActual.descripcion }}</ion-card-title>
+              <p style="color: rgb(229, 229, 229); font-size: 1rem; margin: 10px;" *ngIf="productoActual.detalle">{{productoActual.detalle}}</p>
+              <ion-card-title class="precio" style="margin-left: -26px;">💲{{productoActual.precio}}</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content class="info-producto">
+              <div class="izquierda">
+
+
+              </div>
+              <div class="derecha">
+                <ion-label>⏱️ {{ productoActual.tiempoElaboracion }} min</ion-label>
+
+              </div>
+            </ion-card-content>
+          </ion-card>
+
+          <ion-button fill="clear" class="carousel-flecha derecha" (click)="cambiarProducto(1)">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <div style="height: 180px;"></div>
+</ion-content>
+
+<div class="resumen-pedido-fijo" *ngIf="pedido.length > 0">
+  <div class="resumen-header">
+    <h3 class="resumen-total">PRECIO TOTAL</h3>
+    <h3 class="resumen-total">${{ getTotal() }}</h3>
+    <p class="resumen-tiempo">⏱️ Tiempo Estimado: {{ getTiempoEstimadoTotal() }}min</p>
+  </div>
+  
+  <ion-button expand="block" color="success" (click)="mostrarResumen = !mostrarResumen" style="font-size: 16px; font-weight: bold;">
+    🛒 Ver Pedido ({{ getCantidadTotal() }} productos)
+  </ion-button>
+</div>
+
+<div class="modal-pedido" *ngIf="mostrarResumen">
+  <div class="modal-contenido">
+    <h2>🛒 Tu Pedido</h2>
+
+    <ion-list class="listaProductos">
+      <ion-item class="productoItem" *ngFor="let item of pedido">
+        <ion-label>
+          <h3 style="font-size: 1.4rem;">{{ item.producto.descripcion }}</h3>
+          <p style="font-size: 1rem;">Cantidad: {{ item.cantidad }} | Subtotal: ${{ item.cantidad * item.producto.precio }}</p>
+        </ion-label >
+        <ion-button fill="clear" color="danger" (click)="eliminarDelPedido(item.producto)">✕</ion-button>
+      </ion-item>
+    </ion-list>
+
+    <div class="total-resumen">
+      <p style="margin-bottom: 0;">Tiempo Estimado: {{ getTiempoEstimadoTotal() }}min</p>
+      <p style="margin-top: 7px;">Total: ${{ getTotal() }}</p>
+    </div>
+
+    <ion-button expand="block" color="primary" (click)="confirmarPedido()">✅ Confirmar Pedido</ion-button>
+    <ion-button expand="block" color="danger" (click)="borrarPedido()">🗑️ Borrar Todo</ion-button>
+    <ion-button expand="block" fill="clear" (click)="mostrarResumen = false">Cerrar</ion-button>
+  </div>
+</div> -->

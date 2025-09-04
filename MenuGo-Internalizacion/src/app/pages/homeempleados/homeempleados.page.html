@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar class="toolbar-financiero header-toolbar" style="--background: #f4c060;">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/pedidos-empleado"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ textos[currentLang].header }}</ion-title>
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+      <ion-button (click)="logOut()">
+        <ion-icon name="log-out" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="full-screen-container">
+
+    <div class="mapa-modal" *ngIf="mapVisible">
+      <div class="modal-backdrop" (click)="mapVisible = false"></div>
+      <div class="modal-content">
+        <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+        </app-mapaidioma>
+      </div>
+    </div>
+
+    <ion-button class="half top-btn" (click)="onSelect('crearproducto')">
+      <div class="btn-content">
+        <ion-icon name="add-circle-outline" size="large"></ion-icon>
+        <ion-label>{{ textos[currentLang].crear }} {{ tituloTraducido }}</ion-label>
+      </div>
+    </ion-button>
+    <ion-button class="half bottom-btn" (click)="onSelect('pedidos')">
+      <div class="btn-content">
+        <ion-icon name="receipt-outline" size="large"></ion-icon>
+        <ion-label>{{ textos[currentLang].pedidos }}</ion-label>
+      </div>
+    </ion-button>
+
+  </div>
+</ion-content>

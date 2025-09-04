@@ -1,0 +1,191 @@
+.fondo-financiero {
+  --background: #f1e2c9;
+  position: relative;
+}
+
+.div-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.spinner-financiero {
+  --color: #FF6600;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.user-swiper {
+  --swiper-pagination-color: #FF6600;
+
+  ::ng-deep .swiper-pagination {
+    bottom: 90px !important; 
+  }
+
+  /* Agrandar cada punto */
+  ::ng-deep .swiper-pagination-bullet {
+    width: 12px !important;
+    height: 12px !important;
+    margin: 0 6px !important;
+    opacity: 0.6;
+  }
+  /* Punto activo más opaco */
+  ::ng-deep .swiper-pagination-bullet-active {
+    opacity: 1;
+  }
+}
+
+.user-card {
+  width: 90%;
+  margin: 20px auto;
+  min-height: 570px;
+  background: #f5e3c7;
+  border: 1px solid rgb(253, 167, 54);
+
+  ion-card-title{
+    text-align: center;
+    font-size: 2rem !important;
+    font-weight: bold !important;
+  }
+
+  ion-card-subtitle{
+    color: #464646 !important;
+    font-size: 1.5rem !important;
+    font-weight: bold !important;
+  }
+
+  p{
+    color: #464646 !important;
+    font-size: 1.3rem !important;
+  }
+}
+
+.user-avatar {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 10px;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+
+  ion-button{
+    width: 90px;
+  }
+
+  ion-icon{
+    height: 60px;
+    width: 60px;
+  }
+}
+
+.mapa-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  height: 36%;
+  overflow: hidden;
+  z-index: 1001;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+
+// ion-list {
+//   margin: 0;
+//   padding: 0;
+// }
+
+// ion-item {
+//   --inner-padding-start: 16px;
+//   --inner-padding-end: 16px;
+//   --min-height: 140px;
+//   border-bottom: 0.2px solid rgba(255, 68, 0, 0.508);
+//   --background: #f5e3c7;
+// }
+
+// ion-avatar {
+//   width: 70px;
+//   height: 70px;
+//   border-radius: 50%;
+//   overflow: hidden;
+//   margin-right: 12px;
+// }
+
+// ion-avatar img {
+//   width: 100%;
+//   height: 100%;
+//   object-fit: cover;
+// }
+
+// ion-label h2 {
+//   font-size: 1.4rem;
+//   margin: 0;
+//   color: #0d1218;
+//   font-weight: 600;
+// }
+
+// ion-label p {
+//   margin: 4px 0 0;
+//   font-size: 1.3rem;
+//   color: #666;
+// }
+
+// .action-buttons {
+//   display: grid;
+//   gap: 8px;
+
+//   ion-icon{
+//     width: 50px;
+//     height: 50px;
+//   }
+// }
+
+// .action-buttons ion-button {
+//   --min-width: 36px;
+//   --height: 36px;
+//   padding: 0;
+// }
+

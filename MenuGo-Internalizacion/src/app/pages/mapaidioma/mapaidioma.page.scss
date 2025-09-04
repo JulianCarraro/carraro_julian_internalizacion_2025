@@ -1,0 +1,15 @@
+.map-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; 
+}
+
+#mapid {
+  flex: 1;     
+  width: 100%;
+  min-height: 250px;
+}
+
+ion-button {
+  border-radius: 0;
+}

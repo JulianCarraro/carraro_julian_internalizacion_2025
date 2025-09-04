@@ -1,0 +1,149 @@
+<ion-header>
+  <ion-toolbar style="--background: #f4c060;">
+    <ion-title>{{ textos[currentLang].header }}</ion-title>
+    <ion-buttons (click)="back()" slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<div *ngIf="isLoading" class="div-spinner">
+  <ion-spinner name="circular" class="spinner-login"></ion-spinner>
+</div>
+
+<ion-content class="quiz-content">
+
+  <div class="mapa-modal" *ngIf="mapVisible">
+    <div class="modal-backdrop" (click)="mapVisible = false"></div>
+    <div class="modal-content">
+      <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+      </app-mapaidioma>
+    </div>
+  </div>
+  <!-- Pantalla de inicio -->
+  <div class="start-screen" *ngIf="gameState === 'start'">
+    <div class="quiz-card">
+      <ion-icon name="restaurant" class="quiz-icon"></ion-icon>
+      <h1>{{ textos[currentLang].start.title }}</h1>
+      <p>{{ textos[currentLang].start.subtitle }}</p>
+
+      <div class="quiz-info">
+        <ion-icon name="time"></ion-icon>
+        <span>{{ textos[currentLang].start.timeInfo }}</span>
+      </div>
+
+      <div class="quiz-info">
+        <ion-icon name="trophy"></ion-icon>
+        <span>{{ textos[currentLang].start.discountInfo }}</span>
+      </div>
+
+      <ion-button expand="block" color="success" (click)="startGame()">
+        <ion-icon name="play" slot="start"></ion-icon>
+        {{ textos[currentLang].start.startBtn }}
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Pantalla de juego -->
+  <div class="game-screen" *ngIf="gameState === 'playing'">
+    <div class="header-bar">
+      <div class="timer-container">
+        <div class="timer-circle">
+          <div class="timer-progress" [style.stroke-dashoffset]="timerProgress"></div>
+          <div class="timer-text">{{ timeLeft }}</div>
+        </div>
+      </div>
+
+      <div class="score-container">
+        <ion-icon name="star"></ion-icon>
+        <span>{{ textos[currentLang].game.scoreOf.replace('{s}', (score || 0) + '').replace('{t}', (totalQuestions ||
+          0) + '') }}</span>
+      </div>
+    </div>
+
+    <div class="question-container">
+      <h2 class="question-text">{{ currentQuestion?.pregunta }}</h2>
+    </div>
+
+    <div class="options-container">
+      <ion-button *ngFor="let option of currentQuestion?.opciones; let i = index" expand="block"
+        [color]="selectedOption === i ? 'medium' : 'warning'" [disabled]="isAnswered" (click)="selectOption(i)"
+        class="option-button">
+        {{ option }}
+      </ion-button>
+    </div>
+
+    <div class="feedback-container" *ngIf="isAnswered">
+      <div class="feedback" [ngClass]="{'correct': isCorrect, 'incorrect': !isCorrect}">
+        <ion-icon [name]="isCorrect ? 'checkmark-circle' : 'close-circle'"></ion-icon>
+        <span>{{ feedbackMessage }}</span>
+      </div>
+
+      <ion-button expand="block" color="primary" (click)="nextQuestion()">
+        {{
+        currentQuestionIndex < totalQuestions - 1 ? textos[currentLang].game.nextBtn :
+          textos[currentLang].game.resultsBtn }} </ion-button>
+    </div>
+  </div>
+
+  <!-- Pantalla de resultados -->
+  <div class="results-screen" *ngIf="gameState === 'results'">
+    <div class="results-card">
+      <div class="result-header" [ngClass]="{'win': score >= winThreshold, 'lose': score < winThreshold}">
+        <ion-icon [name]="score >= winThreshold ? 'trophy' : 'sad'"></ion-icon>
+        <h2>{{ score >= winThreshold ? textos[currentLang].results.winTitle : textos[currentLang].results.loseTitle }}</h2>
+      </div>
+
+      <div class="result-details">
+        <div class="result-stat">
+          <span>{{ textos[currentLang].results.stats.questions }}</span>
+          <strong>{{ totalQuestions }}</strong>
+        </div>
+
+        <div class="result-stat">
+          <span>{{ textos[currentLang].results.stats.correct }}</span>
+          <strong>{{ score }}</strong>
+        </div>
+
+        <div class="result-stat">
+          <span>{{ textos[currentLang].results.stats.percent }}</span>
+          <strong>{{ (score / totalQuestions) * 100 }}%</strong>
+        </div>
+      </div>
+
+      <div class="result-message" *ngIf="score >= winThreshold">
+        <p *ngIf="primerIntento == true">{{ textos[currentLang].results.winMsgs.first }}</p>
+        <p *ngIf="primerIntento == false && gano == false">{{ textos[currentLang].results.winMsgs.laterNoDiscount }}</p>
+        <p *ngIf="primerIntento == false && gano == true">{{ textos[currentLang].results.winMsgs.laterAlready }}
+        </p>
+      </div>
+
+      <div class="result-message" *ngIf="score < winThreshold">
+        <p>{{ textos[currentLang].results.loseMsgs.need.replace('{n}', (winThreshold || 0) + '') }}</p>
+      </div>
+
+      <div class="result-message" *ngIf="score < winThreshold && primerIntento == false && gano == true">
+        <p>{{ textos[currentLang].results.loseMsgs.consolation }}</p>
+      </div>
+
+      <div class="result-actions">
+        <ion-button expand="block" color="primary" (click)="restartGame()">
+          <ion-icon name="refresh" slot="start"></ion-icon>
+          {{ textos[currentLang].results.actions.restart }}
+        </ion-button>
+
+        <ion-button expand="block" fill="outline" color="medium" routerLink="/local" (click)="back()">
+          <ion-icon name="home" slot="start"></ion-icon>
+          {{ textos[currentLang].results.actions.home }}
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,123 @@
+<ion-header>
+  <ion-toolbar class="toolbar-financiero header-toolbar" style="--background: #f4c060;">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/local"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ textos[currentLang].header }}</ion-title>
+
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="order-tracking-content">
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>{{ textos[currentLang].loading.text }}</p>
+  </div>
+
+  <div class="mapa-modal" *ngIf="mapVisible">
+    <div class="modal-backdrop" (click)="mapVisible = false"></div>
+    <div class="modal-content">
+      <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+      </app-mapaidioma>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-container">
+    <ion-icon name="warning" color="danger"></ion-icon>
+    <p>{{ errorMessage }}</p>
+    <ion-button (click)="ngOnInit()" fill="clear">
+      <ion-icon name="refresh" slot="start"></ion-icon>
+      {{ textos[currentLang].error.retry }}
+    </ion-button>
+  </div>
+
+  <div *ngIf="pedidoActual && !isLoading" class="order-card">
+    <!-- <div class="order-header">
+      <ion-icon name="restaurant" class="order-icon"></ion-icon>
+      <h2>Pedido</h2>
+      <ion-badge color="warning">En preparación</ion-badge>
+    </div> -->
+    <div class="order-header">
+      <ion-icon name="restaurant" class="order-icon"></ion-icon>
+      <h2>{{ textos[currentLang].order.title }}</h2>
+      <!-- antes: <ion-badge color="warning">En preparación</ion-badge> -->
+      <ion-badge [color]="getStatusColor(pedidoActual.estado)">
+        {{ getStatusText(pedidoActual.estado) }}
+      </ion-badge>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="progressPercentage"></div>
+      </div>
+      <div class="progress-labels">
+        <div class="progress-step" [class.active]="progressPercentage > 0">
+          <ion-icon name="document-text"></ion-icon>
+          <span>{{ textos[currentLang].order.steps.recibido }}</span>
+        </div>
+        <div class="progress-step" [class.active]="progressPercentage > 33">
+          <ion-icon name="time"></ion-icon>
+          <span>{{ textos[currentLang].order.steps.preparando }}</span>
+        </div>
+        <div class="progress-step" [class.active]="progressPercentage > 99">
+          <ion-icon name="checkmark-circle"></ion-icon>
+          <span>{{ textos[currentLang].order.steps.listo }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="time-estimation">
+      <ion-icon name="time-outline"></ion-icon>
+      <div>
+        <h3>{{ textos[currentLang].order.time.title }}</h3>
+        <p>{{ estimatedTime }} {{ textos[currentLang].order.time.minutes }}</p>
+      </div>
+    </div>
+
+    <div class="order-details">
+      <h3>{{ textos[currentLang].order.details.title }}</h3>
+      <div class="order-items">
+        <div class="order-item" *ngFor="let tarea of tareas">
+          <div class="item-info">
+            <span class="item-name">{{ tarea.producto?.descripcion || textos[currentLang].order.details.loadingItem }}</span>
+            <ion-badge [color]="getStatusColor(tarea.estado)" class="item-status">
+              {{ getStatusText(tarea.estado) }}
+            </ion-badge>
+          </div>
+          <!-- <div class="item-progress" *ngIf="tarea.estado !== 'finalizado'">
+            <span class="item-time">{{ tarea.tiempoRestante }} min</span>
+            <div class="item-progress-bar">
+              <div class="item-progress-fill" [style.width.%]="tarea.estado === 'en preparacion' ? 50 : 10"></div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="order-summary">
+      <h3>Resumen</h3>
+      <div class="summary-item">
+        <span>Subtotal</span>
+        <span>${{ pedidoActual.precioTotal | number:'1.2-2' }}</span>
+      </div>
+      <div class="summary-item total">
+        <span>Total</span>
+        <span>${{ pedidoActual.precioTotal | number:'1.2-2' }}</span>
+      </div>
+    </div> -->
+  </div>
+
+  <!-- <div *ngIf="pedidoActual && !isLoading" class="order-actions">
+    <ion-button expand="block" fill="outline" (click)="contactStaff()">
+      <ion-icon name="chatbubbles" slot="start"></ion-icon>
+      Contactar al personal
+    </ion-button>
+  </div> -->
+</ion-content>

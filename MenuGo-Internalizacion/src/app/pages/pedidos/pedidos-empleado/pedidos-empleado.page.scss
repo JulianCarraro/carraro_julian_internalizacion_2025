@@ -1,0 +1,311 @@
+.fondo-financiero {
+  --background: #f1e2c9;
+}
+
+
+.div-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.spinner-financiero {
+  width: 50px;
+  height: 50px;
+  --color: #FF6600;
+}
+
+
+.login-container {
+  padding: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.tarjeta-login {
+  background: rgba(255, 255, 255, 0);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+  min-height: 100%;
+}
+
+
+.encabezado {
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(13, 18, 24, 0.1);
+}
+
+.titulo {
+  color: #0d1218;
+  font-size: 2.3rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.subtitulo {
+  color: #5a5a5a;
+  font-size: 14px;
+  margin: 0;
+}
+
+
+.lista-tareas {
+  background: #f1dab3;
+  margin: 0 -7px;
+  border-radius: 25px;
+  padding: 13px;
+  margin-top: 13px;
+}
+
+.item-tarea {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.item-tarea:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contenido-tarea {
+  margin: 0;
+}
+
+.numero-tarea {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0d1218;
+  margin-bottom: 8px;
+}
+
+.producto-titulo {
+  font-size: 12px;
+  color: #7a7a7a;
+  margin: 0;
+}
+
+.descripcion-producto {
+  font-size: 14px;
+  color: #0d1218;
+  margin: 4px 0 8px 0;
+  font-weight: 500;
+}
+
+.estado-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.estado-badge {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.estado-pendiente {
+  --background: #f8d7a1;
+  --color: #e65100;
+}
+
+.estado-en-preparacion {
+  --background: #a2f0a8;
+  --color: #007306;
+}
+
+.eta-tarea {
+  font-size: 12px;
+  color: #5a5a5a;
+  margin: 0;
+}
+
+.acciones-tarea {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 120px;
+  align-items: end;
+}
+
+.boton-accion {
+  margin: 0;
+  height: 60px;
+  width: 60px;
+  font-size: 2rem;
+  font-weight: 500;
+  --border-radius: 8px;
+  text-transform: none;
+}
+
+
+.sin-tareas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.icono-sin-tareas {
+  font-size: 48px;
+  color: #bdc3c7;
+  margin-bottom: 16px;
+}
+
+.texto-sin-tareas {
+  color: #7a7a7a;
+  font-size: 14px;
+  margin: 0;
+}
+
+
+.small-modal {
+  --width: 90%;
+  --max-width: 800px;
+  --height: 270px;
+  --border-radius: 16px;
+  --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  --background: #f1e2c9;
+  --border-color: rgba(0, 0, 0, 0.05);
+}
+
+.modal-titulo {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0d1218;
+}
+
+.boton-cerrar {
+  --color: #5a5a5a;
+}
+
+.contenido-modal {
+  --background: #ecd3a7;
+  --padding-top: 16px;
+  --padding-bottom: 24px;
+}
+
+.item-modal {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 24px;
+}
+
+.etiqueta-modal {
+  font-size: 14px;
+  color: #5a5a5a;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.input-modal {
+  background: white;
+  border-radius: 8px;
+  padding: 12px 16px !important;
+  --padding-start: 12px !important;
+  --padding-end: 12px !important;
+  font-size: 14px;
+  border: 1px solid #e0e0e0;
+}
+
+.boton-confirmar {
+  --border-radius: 8px;
+  height: 48px;
+  font-weight: 500;
+  text-transform: none;
+  margin-top: 8px;
+}
+
+.empty-state {
+  background: rgba(255, 255, 255, 0);
+  border-radius: 16px;
+  padding: 32px 24px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.empty-state-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.empty-icon {
+  font-size: 64px;
+  color: #2dd36f;
+  margin-bottom: 16px;
+}
+
+.empty-title {
+  color: #2dd36f;
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.empty-message {
+  color: #666;
+  margin: 0 0 24px 0;
+  font-size: 1rem;
+}
+
+.empty-btn {
+  --border-radius: 8px;
+  --background: #2dd36f;
+  --color: white;
+  max-width: 200px;
+}
+
+.mapa-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  height: 36%;
+  overflow: hidden;
+  z-index: 1001;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}

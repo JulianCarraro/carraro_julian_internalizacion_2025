@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar style="--background: yellow !important;">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/local"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div *ngIf="isLoading" class="div-spinner">
+  <ion-spinner name="circular" class="spinner-anonimo"></ion-spinner>
+</div>
+
+<ion-content class="ion-padding fondo-pago">
+  <div class="pago-contenedor">
+
+    <div class="mapa-modal" *ngIf="mapVisible">
+      <div class="modal-backdrop" (click)="mapVisible = false"></div>
+      <div class="modal-content">
+        <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+        </app-mapaidioma>
+      </div>
+    </div>
+
+
+    <div class="cuenta-info">
+      <img src="assets/logoApp.png" alt="Logo" class="logo-empresa">
+      <h2 class="nombre-empresa">{{ textos[currentLang].brand }}</h2>
+    </div>
+
+
+    <div class="total-card">
+      <div class="linea-superior"></div>
+
+      <div class="total-label">
+        <span>{{ textos[currentLang].total }}</span>
+        <span class="monto-estatico">${{ totalPagar | number:'1.0-0' }}</span>
+      </div>
+
+      <div class="linea-inferior"></div>
+
+      <div class="tarjeta-simulada">
+        <div class="marca-ficticia">CODIGO<br>BENDITO</div>
+        <div class="disponible-label">{{ textos[currentLang].available }}</div>
+        <div class="sin-comision">{{ textos[currentLang].noFee }}</div>
+      </div>
+    </div>
+
+
+    <ion-button expand="block" class="transferir-btn" (click)="realizarPago()">
+      {{ textos[currentLang].transfer }}
+    </ion-button>
+
+  </div>
+</ion-content>

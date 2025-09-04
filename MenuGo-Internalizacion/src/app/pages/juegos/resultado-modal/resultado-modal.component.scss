@@ -1,0 +1,143 @@
+.modal-content {
+  --background: #f8f9fa;
+}
+
+.resultado-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.mensaje {
+  margin-bottom: 30px;
+  
+  ion-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+  }
+  
+  h2 {
+    color: #333;
+    font-size: 1.8rem;
+    margin: 0;
+  }
+}
+
+.cartas-comparacion {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 30px 0;
+}
+
+.carta-comparacion {
+  width: 100px;
+  height: 150px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  &-valor {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+  }
+  
+  &-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+  }
+}
+
+.vs-container {
+  .vs-circle {
+    width: 50px;
+    height: 50px;
+    background: #ff5722;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+}
+
+.eleccion-container {
+  margin: 25px 0;
+  
+  .eleccion-label {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .eleccion-badge {
+    display: inline-block;
+    padding: 8px 25px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    
+    &.correcta {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 2px solid #4caf50;
+    }
+    
+    &.incorrecta {
+      background: #ffebee;
+      color: #c62828;
+      border: 2px solid #f44336;
+    }
+  }
+}
+
+.explicacion {
+  background: #e3f2fd;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 20px 0;
+  text-align: center;
+  
+  p {
+    margin: 0;
+    color: #1976d2;
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+}
+
+.mapa-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  height: 36%;
+  overflow: hidden;
+  z-index: 1001;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}

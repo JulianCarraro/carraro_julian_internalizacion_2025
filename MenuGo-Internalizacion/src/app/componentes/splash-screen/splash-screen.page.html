@@ -1,0 +1,26 @@
+<div *ngIf="show && data == null" class="splash">
+  <div class="bubbles">
+        <div class="bubble" *ngFor="let bubble of bubbles; index as i" [style]="bubble"></div>
+      </div>
+      
+      <div class="splash-container" [class.animated]="animateSplash">
+        <div class="logo-container">
+          <div class="wave"></div>
+          <img src="../assets/logoApp.png" class="logo" alt="Logo app"/>
+        </div>
+        
+        <div class="text-group">
+          <h1 class="student-name">
+            <span class="last-name">MenúGo</span>
+            <span class="first-name">Tu aplicación de restaurantes!</span>
+          </h1>
+          <div class="division-container">
+            <span class="division" style="margin-bottom: 5px;">Lucas De Nardo</span>
+            <span class="division">Julian Carraro</span>
+          </div>
+          <div class="division-container">
+            <span class="division" style="margin-bottom: 5px;">PPS 141</span>
+          </div>
+        </div>
+      </div>
+</div>

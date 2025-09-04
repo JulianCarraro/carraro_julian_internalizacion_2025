@@ -1,0 +1,99 @@
+<!-- juego-descuento.page.html -->
+<ion-header>
+  <ion-toolbar style="--background: #f4c060;">
+    <ion-title>{{ textos[currentLang].header }}</ion-title>
+    <ion-buttons (click)="back()" slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="encuesta-container">
+
+    <div class="mapa-modal" *ngIf="mapVisible">
+      <div class="modal-backdrop" (click)="mapVisible = false"></div>
+      <div class="modal-content">
+        <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+        </app-mapaidioma>
+      </div>
+    </div>
+    <div class="header-section">
+      <!-- <ion-icon name="restaurant" class="header-icon"></ion-icon> -->
+      <h1>{{ textos[currentLang].headerSection.titulo }}</h1>
+      <p>{{ textos[currentLang].headerSection.subtitulo }}</p>
+    </div>
+
+    <div *ngIf="isLoading" class="div-spinner">
+      <ion-spinner name="circular" class="spinner-login"></ion-spinner>
+    </div>
+    <!-- Mensaje de confirmación -->
+    <div *ngIf="submitted && !isLoading" class="div-mensaje">
+      <div class="confirmation-message">
+        <ion-icon name="checkmark-circle" color="success"></ion-icon>
+        <p>{{ textos[currentLang].confirmacion }}</p>
+      </div>
+    </div>
+
+    <!-- Calificación Comida -->
+    <div class="rating-section">
+      <div class="rating-header">
+        <ion-icon name="fast-food" class="rating-icon"></ion-icon>
+        <h2>{{ textos[currentLang].ratings.comida }}</h2>
+      </div>
+      <div class="rating-stars">
+        <ion-icon *ngFor="let star of [1,2,3,4,5]; let i = index" [name]="foodRating > i ? 'star' : 'star-outline'"
+          (click)="setFoodRating(i + 1)" class="star-icon"></ion-icon>
+      </div>
+      <div class="rating-label">{{ textos[currentLang].ratings.estrellas.replace('{n}', foodRating) }}</div>
+    </div>
+
+    <!-- Calificación Atención -->
+    <div class="rating-section">
+      <div class="rating-header">
+        <ion-icon name="people" class="rating-icon"></ion-icon>
+        <h2>{{ textos[currentLang].ratings.atencion }}</h2>
+      </div>
+      <div class="rating-stars">
+        <ion-icon *ngFor="let star of [1,2,3,4,5]; let i = index" [name]="serviceRating > i ? 'star' : 'star-outline'"
+          (click)="setServiceRating(i + 1)" class="star-icon"></ion-icon>
+      </div>
+      <div class="rating-label">{{ textos[currentLang].ratings.estrellas.replace('{n}', serviceRating) }}</div>
+    </div>
+
+    <!-- Calificación Precio -->
+    <div class="rating-section">
+      <div class="rating-header">
+        <ion-icon name="cash" class="rating-icon"></ion-icon>
+        <h2>{{ textos[currentLang].ratings.precio }}</h2>
+      </div>
+      <div class="rating-stars">
+        <ion-icon *ngFor="let star of [1,2,3,4,5]; let i = index" [name]="priceRating > i ? 'star' : 'star-outline'"
+          (click)="setPriceRating(i + 1)" class="star-icon"></ion-icon>
+      </div>
+      <div class="rating-label">{{ textos[currentLang].ratings.estrellas.replace('{n}', priceRating) }}</div>
+    </div>
+
+    <!-- Comentarios -->
+    <!-- <div class="comments-section">
+      <h2>Comentarios adicionales</h2>
+      <ion-textarea placeholder="¿Algo que nos quieras decir sobre tu experiencia? (Máx. 200 caracteres)"
+        [(ngModel)]="comments" [maxlength]="200" rows="4" class="comment-textarea"></ion-textarea>
+      <div class="char-counter">{{comments.length || 0}}/200 caracteres</div>
+    </div> -->
+
+    <!-- Botón Enviar -->
+    <ion-button expand="block" color="primary" (click)="submitSurvey()" [disabled]="!canSubmit()" class="submit-button">
+      <ion-icon name="send" slot="start"></ion-icon>
+      {{ textos[currentLang].enviar }}
+    </ion-button>
+  </div>
+</ion-content>

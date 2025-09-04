@@ -1,0 +1,146 @@
+<ion-header>
+  <ion-toolbar class="header-toolbar" style="--background: #f4c060; color: black;">
+    <ion-buttons (click)="back()" slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="stats-title" style="color: black;">{{ textos[currentLang].header }}</ion-title>
+
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+
+<div *ngIf="isLoading" class="div-spinner">
+  <ion-spinner name="circular" class="spinner"></ion-spinner>
+</div>
+
+<div class="mapa-modal" *ngIf="mapVisible">
+  <div class="modal-backdrop" (click)="mapVisible = false"></div>
+  <div class="modal-content">
+    <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+    </app-mapaidioma>
+  </div>
+</div>
+
+<ion-content class="stats-container">
+  <ion-row>
+    <ion-col>
+      <ion-item class="stats-select">
+        <ng-container *ngIf="selectRerender">
+
+          <ion-select [(ngModel)]="ratingType" (ionChange)="updateChartData($event)" interface="popover"
+            [attr.aria-label]="textos[currentLang].selects.ratingTypeLabel" value="food" class="select-wrapper"
+            style="font-size: 1.4rem;">
+            <ion-select-option value="food">{{ textos[currentLang].selects.rating.food }}</ion-select-option>
+            <ion-select-option value="price">{{ textos[currentLang].selects.rating.price }}</ion-select-option>
+            <ion-select-option value="service">{{ textos[currentLang].selects.rating.service }}</ion-select-option>
+          </ion-select>
+
+        </ng-container>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <!-- Selector de tipo de gráfico -->
+      <ion-item class="stats-select">
+        <ng-container *ngIf="selectRerender">
+
+          <ion-select [(ngModel)]="chartType" (ionChange)="updateChartData($event)" interface="popover"
+            [attr.aria-label]="textos[currentLang].selects.chartTypeLabel" value="doughnut" class="select-wrapper"
+            style="font-size: 1.4rem;">
+            <ion-select-option value="doughnut">{{ textos[currentLang].selects.chart.doughnut }}</ion-select-option>
+            <ion-select-option value="bar">{{ textos[currentLang].selects.chart.bar }}</ion-select-option>
+            <ion-select-option value="line">{{ textos[currentLang].selects.chart.line }}</ion-select-option>
+            <ion-select-option value="pie">{{ textos[currentLang].selects.chart.pie }}</ion-select-option>
+            <ion-select-option value="polarArea">{{ textos[currentLang].selects.chart.polarArea }}</ion-select-option>
+          </ion-select>
+
+        </ng-container>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <!-- <ion-segment (ionChange)="updateChartData($event)" value="food" class="stats-segment" ngDefaultControl
+    style="background-color: rgba(230, 140, 95, 0.48); border-radius: 25px; margin: 5px; margin-left: 0px;">
+    <ion-row>
+      <ion-col>
+        <ion-segment-button value="food">Comida</ion-segment-button>
+      </ion-col>
+      <ion-col>
+        <ion-segment-button value="price">Precio</ion-segment-button>
+      </ion-col>
+      <ion-col>
+        <ion-segment-button value="service">Servicio</ion-segment-button>
+      </ion-col>
+    </ion-row>
+  </ion-segment>
+  <ion-segment (ionChange)="updateChartData($event)" class="stats-segment" value="doughnut" ngDefaultControl
+    style="background-color: rgba(230, 140, 95, 0.48); border-radius: 25px; margin: 5px; margin-left: 0px;">
+    <ion-row>
+      <ion-col>
+        <ion-segment-button value="doughnut">Torta</ion-segment-button>
+      </ion-col>
+      <ion-col>
+        <ion-segment-button value="bar">Barras</ion-segment-button>
+      </ion-col>
+      <ion-col>
+        <ion-segment-button value="line">Líneas</ion-segment-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-segment-button value="pie">Pastel</ion-segment-button>
+      </ion-col>
+      <ion-col>
+        <ion-segment-button value="polarArea">Área Polar</ion-segment-button>
+      </ion-col>
+    </ion-row>
+  </ion-segment> -->
+
+  <div *ngIf="!isLoading" class="chart-card">
+    <div class="chart-header">
+      <ion-icon name="stats-chart" class="chart-icon"></ion-icon>
+      <h2 class="chart-title">{{ textos[currentLang].charts.distributionTitle }}</h2>
+    </div>
+    <div class="chart-wrapper">
+      <canvas baseChart [data]="chartData" [type]="chartType" [options]="chartOptions">
+      </canvas>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading" class="chart-card">
+    <div class="chart-header">
+      <ion-icon name="calendar" class="chart-icon"></ion-icon>
+      <h2 class="chart-title">{{ textos[currentLang].charts.timelineTitle }}</h2>
+    </div>
+    <div class="chart-wrapper">
+      <canvas baseChart [data]="timelineData" [type]="'line'" [options]="lineOptions">
+      </canvas>
+    </div>
+  </div>
+
+  <!-- <div *ngIf="!isLoading" class="comments-container">
+    <h3 class="comments-title">Comentarios Recientes</h3>
+    <div class="comment-card" *ngFor="let comment of recentComments">
+      <div class="comment-header">
+        <img [src]="comment.foto" alt="Avatar" class="comment-avatar">
+        <div>
+          <strong>{{ comment.userName }}</strong>
+          <div class="comment-date">{{ formatDate(comment.date) }}</div>
+        </div>
+        <div class="comment-ratings">
+          <span>🍽️ {{ comment.foodRating }}</span>
+          <span>💰 {{ comment.priceRating }}</span>
+          <span>👨‍🍳 {{ comment.serviceRating }}</span>
+        </div>
+      </div>
+      <p class="comment-text">{{ comment.comments }}</p>
+    </div>
+  </div> -->
+</ion-content>

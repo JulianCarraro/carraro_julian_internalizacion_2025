@@ -1,0 +1,124 @@
+<!-- juego-descuento.page.html -->
+<ion-header>
+  <ion-toolbar style="--background: #f4c060;">
+    <ion-title>{{ textos[currentLang].header }}</ion-title>
+    <ion-buttons (click)="back()" slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div *ngIf="isLoading" class="div-spinner">
+  <ion-spinner name="circular" class="spinner-login"></ion-spinner>
+</div>
+<ion-content class="juego-content">
+
+  <div class="mapa-modal" *ngIf="mapVisible">
+    <div class="modal-backdrop" (click)="mapVisible = false"></div>
+    <div class="modal-content">
+      <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+      </app-mapaidioma>
+    </div>
+  </div>
+  <div class="container" *ngIf="!juegoCompletado && !error">
+    <div class="header" style="background-color: rgba(0, 0, 0, 0.157); border-radius: 15px;">
+      <h1>{{ textos[currentLang].game.title }}</h1>
+      <p>{{ textos[currentLang].game.subtitle }}</p>
+    </div>
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="aciertos * 20"></div>
+      </div>
+      <div class="progress-text">{{ textos[currentLang].game.progress.replace('{n}', (aciertos || 0).toString()) }}</div>
+    </div>
+
+    <div class="cartas-container">
+      <div class="carta carta-actual">
+        <div class="carta-valor">{{ cartaActual }}</div>
+        <div class="carta-label">{{ textos[currentLang].game.currentCard }}</div>
+      </div>
+
+      <div class="vs-container">
+        <div class="vs-circle">?</div>
+      </div>
+
+      <div class="carta carta-siguiente">
+        <div class="carta-valor">?</div>
+        <div class="carta-label">{{ textos[currentLang].game.nextCard }}</div>
+      </div>
+    </div>
+
+    <div class="botones">
+      <ion-button expand="block" color="danger" (click)="seleccionar('menor')" [disabled]="!juegoActivo">
+        <ion-icon name="arrow-down" slot="start"></ion-icon>
+        {{ textos[currentLang].game.lower }}
+      </ion-button>
+
+      <ion-button expand="block" color="success" (click)="seleccionar('mayor')" [disabled]="!juegoActivo">
+        <ion-icon name="arrow-up" slot="start"></ion-icon>
+        {{ textos[currentLang].game.higher }}
+      </ion-button>
+    </div>
+
+    <!-- <ion-button expand="block" fill="outline" (click)="iniciarJuego()">
+      <ion-icon name="refresh" slot="start"></ion-icon>
+      Reiniciar Juego
+    </ion-button> -->
+  </div>
+
+  <div class="descuento-container" *ngIf="juegoCompletado">
+    <div class="confetti"></div>
+    <div class="descuento-card">
+      <ion-icon name="trophy" class="trophy-icon"></ion-icon>
+      <h2>{{ textos[currentLang].win.title }}</h2>
+      <p *ngIf="primerIntento == true && gano == true">Ganaste un descuento del 10%</p>
+      <p>{{ textos[currentLang].win.wow }}</p>
+      <!-- <div class="codigo-descuento">
+        GENIAL
+      </div>
+      <p class="instrucciones">Usa este código en tu próxima compra</p> -->
+      <ion-button expand="block" color="success" (click)="iniciarJuego(1)">
+        <ion-icon name="play" slot="start"></ion-icon>
+        {{ textos[currentLang].game.playAgain }}
+      </ion-button>
+    </div>
+  </div>
+
+  <div class="descuento-container" *ngIf="error">
+    <div class="descuento-card">
+      <ion-icon name="close-circle-outline" class="lose-icon"></ion-icon>
+      <h2>{{ textos[currentLang].lose.title }}</h2>
+      <p>{{ textos[currentLang].lose.text }}</p>
+      <p>{{ textos[currentLang].lose.theCardWas }}</p>
+
+      <div class="carta-wrapper">
+        <div class="carta carta-actual">
+          <div class="carta-valor">{{ cartaActual }}</div>
+        </div>
+      </div>
+      <p class="instrucciones" *ngIf="primerIntento == true">{{ textos[currentLang].lose.noFirstTry }}</p>
+
+      <ion-button expand="block" color="warning" (click)="iniciarJuego(1)">
+        <ion-icon name="play" slot="start"></ion-icon>
+        {{ textos[currentLang].game.playAgain }}
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- <div class="historial-container">
+    <h3>Historial</h3>
+    <ion-list>
+      <ion-item *ngFor="let item of historial">
+        <ion-label>{{ item }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div> -->
+</ion-content>

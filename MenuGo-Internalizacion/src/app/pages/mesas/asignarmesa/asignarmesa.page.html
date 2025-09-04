@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar class="toolbar-financiero header-toolbar" style="--background: #f4c060;">
+    <ion-title>{{ textos[currentLang].header }}</ion-title>
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+      <ion-button (click)="logOut()">
+        <ion-icon name="log-out" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div class="div-spinner" *ngIf="isLoading">
+  <ion-spinner name="circular" class="spinner-asignacion"></ion-spinner>
+</div>
+
+<ion-content [fullscreen]="true" class="fondo-asignacion">
+
+  <div class="mapa-modal" *ngIf="mapVisible">
+    <div class="modal-backdrop" (click)="mapVisible = false"></div>
+    <div class="modal-content">
+      <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+      </app-mapaidioma>
+    </div>
+  </div>
+
+
+  <div class="" style="height: 100%;">
+    <div class="tarjeta-asignacion">
+      <div class="encabezado">
+        <h1 class="titulo">{{ textos[currentLang].header }}</h1>
+        <p class="subtitulo">
+          <ng-container *ngIf="!clienteSeleccionado; else clienteOK">
+            {{ textos[currentLang].subtituloSeleccion }}
+          </ng-container>
+          <ng-template #clienteOK>
+            {{ textos[currentLang].clienteLabel }}: <strong>{{ clienteSeleccionado.nombre }}</strong>
+          </ng-template>
+        </p>
+      </div>
+
+      <!-- LISTA DE CLIENTES -->
+      <div *ngIf="clientes?.length && !clienteSeleccionado" class="lista-clientes">
+        <ion-list lines="none" class="lista-estilizada">
+          <h3>{{ textos[currentLang].listas.clientesTitulo }}</h3>
+          <ion-item *ngFor="let cliente of clientes" button (click)="seleccionarCliente(cliente)" class="item-cliente">
+            <ion-label style="display: flex; align-items: center; gap: 10px">
+              <img [src]="cliente.foto"
+                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 10px; border: 1px solid blueviolet">
+              <h2 style="margin: 0; font-size: 1.8rem;">{{ cliente.nombre }}</h2>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <!-- LISTA DE MESAS SIMPLIFICADA -->
+      <div *ngIf="clienteSeleccionado && mesas?.length" class="lista-mesas" style="margin-top: 0;">
+        <ion-button fill="clear" (click)="clienteSeleccionado = null" class="boton-volver" style="margin-bottom: 0;">
+          <ion-icon name="arrow-back" slot="start"></ion-icon>
+          {{ textos[currentLang].botones.cambiarCliente }}
+        </ion-button>
+        <h3 style="margin-bottom: 0;"><ion-icon name="restaurant-outline"></ion-icon> {{ textos[currentLang].listas.mesasTitulo }} </h3>
+        <div class="grid-mesas" style="margin-top: 0;">
+          <div *ngFor="let mesa of mesas" class="card-mesa-simple" (click)="seleccionarMesa(mesa)">
+            <div class="numero-mesa">{{ textos[currentLang].mesa }} {{ mesa.numero }}</div>
+            <img [src]="mesa.foto"
+              style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 1px solid blueviolet">
+            <div class="info-mesa">
+              <span>{{ mesa.cantComensales }}  
+                {{ mesa.cantComensales === 1
+                    ? textos[currentLang].personas.uno
+                    : textos[currentLang].personas.muchos }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,262 @@
+<ion-header>
+  <ion-toolbar class="toolbar-financiero header-toolbar" style="--background: #f4c060;">
+    <ion-title>{{ textos[currentLang].header }}</ion-title>
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+      <ion-button (click)="logOut()">
+        <ion-icon name="log-out" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div *ngIf="isLoading" class="div-spinner">
+  <ion-spinner name="circular" class="spinner-anonimo"></ion-spinner>
+</div>
+
+  <div class="mapa-modal" *ngIf="mapVisible">
+    <div class="mapa-modal-backdrop" (click)="mapVisible = false"></div>
+    <div class="mapa-modal-content">
+      <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+      </app-mapaidioma>
+    </div>
+  </div>
+
+<ion-content [fullscreen]="true" class="restaurant-content">
+  <div class="background-pattern"></div>
+  <div class="container">
+    <div class="card-container">
+      <div class="encabezado">
+        <h1 class="titulo">{{ textos[currentLang].bienvenida.titulo }}</h1>
+        <p class="subtitulo">{{ textos[currentLang].bienvenida.subtitulo }}</p>
+      </div>
+
+
+      <!-- <swiper-container pagination="true" navigation="false" autoplay-delay="5000" class="custom-swiper card-swipper">
+        <swiper-slide *ngFor="let resena of resenas">
+          <div class="resena-card">
+            <div class="resena-header">
+              <div class="avatar" [style.background]="resena.color">{{ resena.iniciales }}</div>
+              <div class="resena-info">
+                <h3 class="nombre">{{ resena.nombre }}</h3>
+                <div class="calificacion">
+                  <ion-icon name="star" *ngFor="let star of [].constructor(resena.estrellas)"></ion-icon>
+                </div>
+              </div>
+            </div>
+            <p class="comentario">{{ resena.comentario }}</p>
+          </div>
+        </swiper-slide>
+      </swiper-container> -->
+      <!-- Sección de Encuestas Reales -->
+      <swiper-container pagination="true" navigation="false" autoplay-delay="5000" class="custom-swiper card-swipper">
+        <swiper-slide *ngFor="let encuesta of encuestas">
+          <div class="resena-card">
+            <div class="resena-header">
+              <div class="avatar">
+                <img *ngIf="encuesta.foto; else initials" [src]="encuesta.foto" alt="Foto de perfil" />
+                <ng-template #initials>{{ getInitials(encuesta.userName) }}</ng-template>
+              </div>
+              <div class="resena-info">
+                <h3 class="nombre">{{ encuesta.userName }}</h3>
+                <div class="calificacion">
+                  <ion-icon name="star" *ngFor="let star of [].constructor(encuesta.foodRating)"></ion-icon>
+                </div>
+                <div class="calificacion-detail">
+                  <ion-icon name="restaurant" class="detail-icon"></ion-icon>
+                  {{ textos[currentLang].ratings.comida }}: {{ encuesta.foodRating }}/5
+                </div>
+                <div class="calificacion-detail">
+                  <ion-icon name="people" class="detail-icon"></ion-icon>
+                  {{ textos[currentLang].ratings.atencion }}: {{ encuesta.serviceRating }}/5
+                </div>
+                <div class="calificacion-detail">
+                  <ion-icon name="cash" class="detail-icon"></ion-icon>
+                  {{ textos[currentLang].ratings.precio }}: {{ encuesta.priceRating }}/5
+                </div>
+              </div>
+            </div>
+            <!-- <p class="comentario" *ngIf="encuesta.comments">{{ encuesta.comments }}</p> -->
+            <p class="fecha">{{ formatDate(encuesta.date) }}</p>
+          </div>
+        </swiper-slide>
+      </swiper-container>
+
+      <ion-button *ngIf="estado == 'en mesa'" expand="block" color="primary" class="btn-escaneo"
+        (click)="consultaAMozo()">{{ textos[currentLang].botones.consultaMozo }}</ion-button>
+      <ion-button *ngIf="estado == 'aprobado' && userData.tipoCliente != 'anonimo'" expand="block" color="warning"
+        class="btn-escaneo" (click)="hacerReserva()">{{ textos[currentLang].botones.hacerReserva }}</ion-button>
+      <!-- <ion-button expand="block" color="primary" class="btn-escaneo" (click)="consultaAMozo()">Consulta a Mozo</ion-button> -->
+
+
+      <!-- Estado del usuario -->
+      <div class="scan-estado-fixed">
+        <div class="estado-container" [ngClass]="getClaseEstado(estado)">
+          <ion-icon [name]="getEstadoIcon(estado)" class="estado-icon" style="color: #ffffff;"></ion-icon>
+          <div class="estado-texto">
+            <h3>{{ getEstadoTitulo(estado) }}</h3>
+            <p>{{ getEstadoDescripcion(estado) }}</p>
+          </div>
+        </div>
+
+        <!-- <ion-button expand="block" color="primary" (click)="verResumen()">✅Ver Resumen</ion-button> -->
+
+        <ion-button expand="block" (click)="iniciarEscaneo()" class="btn-escaneo"
+          [disabled]="this.estado === 'en lista de espera' || this.estado === 'esperando aprobacion de pedido'|| this.estado === ''|| this.estado === null || this.estado === undefined || this.estado === 'sin estado'"
+          *ngIf="this.estado !== 'confirmar entrega'">
+          <ion-icon name="qr-code" slot="start"></ion-icon>
+          {{ textos[currentLang].botones.escanearQR }}
+        </ion-button>
+        <ion-button expand="block" (click)="confirmarRecepcion()" class="btn-confirmar"
+          *ngIf="this.estado === 'confirmar entrega'">
+          <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+          {{ textos[currentLang].botones.confirmarRecepcion }}
+        </ion-button>
+      </div>
+
+      <!-- Visualización del QR generado (si está disponible) -->
+      <!-- <div *ngIf="qrCodeUrl" class="qr-container">
+        <img [src]="qrCodeUrl" alt="QR de la lista de espera" />
+        <p class="qr-instructions">Muestra este código al personal para acceder a tu mesa</p>
+      </div> -->
+    </div>
+  </div>
+
+  <!-- cuando se presiona el boton de pagar pedido, en el metodo, traemos el pedido: metodo verResumen()-->
+  <div class="modal-pedido" *ngIf="mostrarResumen">
+
+    <div class="modal-contenido">
+
+      <h2>🧾 {{ textos[currentLang].cuenta.titulo }}</h2>
+
+      <ion-list class="listaProductos">
+        <ion-item *ngFor="let item of pedido.resumen" style="--background: #f1ffb3 !important;">
+          <ion-label>
+            <h3>{{ item.producto.descripcion }}</h3>
+            <p>{{ textos[currentLang].cuenta.cantidad }}: {{ item.cantidad }} |
+              {{ textos[currentLang].cuenta.subtotal }}: ${{ item.cantidad * item.producto.precio }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <hr style="border-top: 1px solid #ccc; margin: 0;">
+
+      <div *ngIf="pedido.descuentos && pedido.descuentos.length > 0">
+        <div class="descuentos">
+          <ion-item *ngFor="let descuento of pedido.descuentos" style="--background: #f1ffb3 !important;">
+            <ion-label>
+              <h3>{{ descuento.mensaje }}</h3>
+              <p>${{ descuento.monto.toFixed(2) }}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+      </div>
+
+      <div *ngIf="this.propina != null">
+        <div class="descuentos">
+          <ion-item style="--background: #f1ffb3 !important;">
+            <ion-label>
+              <h3>{{ textos[currentLang].cuenta.propina }}: </h3>
+              <p>${{this.propina.toFixed(2)}}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+      </div>
+
+      <!-- <ion-button expand="block" color="primary">✅ Escanear QR de Propina</ion-button> -->
+
+      <div class="total-resumen">
+        <strong>{{ textos[currentLang].cuenta.total }}: ${{ pedido.precioTotal.toFixed(2) }}</strong>
+      </div>
+
+      <ion-button expand="block" color="primary" (click)="realizarPago()">✅ {{ textos[currentLang].cuenta.realizarPago
+        }}</ion-button>
+      <ion-button expand="block" fill="clear" (click)="mostrarResumen = false">{{ textos[currentLang].cuenta.cerrar
+        }}</ion-button>
+
+    </div>
+  </div>
+
+
+  <div class="modal-chat" *ngIf="mostrarChat" (click)="cerrarChatSiFuera($event)">
+    <div class="modal-contenido-chat" (click)="$event.stopPropagation()">
+      <app-chat></app-chat>
+    </div>
+
+    <!-- <ion-button fill="clear" class="btn-cerrar-modal" (click)="cerrarChat()" shape="round">
+      <ion-icon name="close" slot="icon-only"></ion-icon>
+    </ion-button> -->
+  </div>
+
+
+  <div class="modal-backdrop" *ngIf="showActionsModal" (click)="closeModal()"></div>
+
+  <div class="actions-modal" *ngIf="showActionsModal">
+    <div class="modal-header">
+      <ion-icon name="close" class="close-icon" (click)="closeModal()"></ion-icon>
+      <h2>{{ textos[currentLang].acciones.titulo }}</h2>
+    </div>
+
+
+    <div class="modal-content">
+      <button class="action-button" (click)="goToGames()"
+        *ngIf="estado == 'esperando pedido' || estado == 'pedido en mesa'">
+        <ion-icon name="game-controller" class="button-icon"></ion-icon>
+        <span>{{ textos[currentLang].acciones.juegos }}</span>
+      </button>
+
+      <button class="action-button" (click)="goToSurvey()"
+        *ngIf="estado == 'esperando pedido' || estado == 'pedido en mesa' && realizoEncuesta == false">
+        <ion-icon name="clipboard" class="button-icon"></ion-icon>
+        <span>{{ textos[currentLang].acciones.encuesta }}</span>
+      </button>
+
+      <button class="action-button" (click)="verGraficos()"
+        *ngIf="estado == 'esperando pedido' || estado == 'pedido en mesa' && realizoEncuesta == true">
+        <ion-icon name="clipboard" class="button-icon"></ion-icon>
+        <span>{{ textos[currentLang].acciones.estadisticas }}</span>
+      </button>
+
+      <button class="action-button" (click)="goToOrderStatus()"
+        *ngIf="estado == 'esperando pedido' || estado == 'pedido en mesa'">
+        <ion-icon name="time" class="button-icon"></ion-icon>
+        <span>{{ textos[currentLang].acciones.estadoPedido }}</span>
+      </button>
+
+      <button class="action-button" (click)="requestBill()" *ngIf="estado == 'pedido en mesa'">
+        <ion-icon name="receipt" class="button-icon"></ion-icon>
+        <span>{{ textos[currentLang].acciones.pedirCuenta }}</span>
+      </button>
+
+      <button class="action-button" (click)="verResumen()" *ngIf="estado == 'pagando'">
+        <ion-icon name="receipt" class="button-icon"></ion-icon>
+        <span>{{ textos[currentLang].acciones.verCuenta }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="actions-modal" *ngIf="showPropinaModal">
+    <div class="modal-header">
+      <ion-icon name="close" class="close-icon" (click)="closeModalPropina()"></ion-icon>
+      <h2>{{ textos[currentLang].acciones.titulo }}</h2>
+    </div>
+
+
+    <div class="modal-content">
+      <button class="action-button" (click)="enviarPropina(20)"><span>{{ textos[currentLang].propina.excelente
+          }}</span></button>
+      <button class="action-button" (click)="enviarPropina(15)"><span>{{ textos[currentLang].propina.muyBueno
+          }}</span></button>
+      <button class="action-button" (click)="enviarPropina(10)"><span>{{ textos[currentLang].propina.bueno
+          }}</span></button>
+      <button class="action-button" (click)="enviarPropina(5)"><span>{{ textos[currentLang].propina.regular
+          }}</span></button>
+      <button class="action-button" (click)="enviarPropina(0)"><span>{{ textos[currentLang].propina.malo
+          }}</span></button>
+    </div>
+  </div>
+</ion-content>

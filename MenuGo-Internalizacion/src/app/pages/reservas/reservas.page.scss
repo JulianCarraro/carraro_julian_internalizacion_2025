@@ -1,0 +1,288 @@
+/* Variables de color */
+$orange-primary: #FF6600;
+$orange-dark: #E65C00;
+$black: #1B1B1B;
+$white: #FFFFFF;
+$gray-light: #F5F5F5;
+$background: #f1e2c9;
+
+.reservas-content {
+  --background: #{$background};
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
+.background-pattern {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: $background;
+  z-index: 0;
+}
+
+.card-container {
+  background: $background;
+  border-radius: 24px;
+  padding: 24px;
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+//   margin-top: 6px;
+  z-index: 1;
+}
+
+.encabezado {
+  text-align: center;
+  margin-bottom: 24px;
+
+  .titulo {
+    color: $orange-primary;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 16px 0 8px;
+  }
+
+  .subtitulo {
+    color: $black;
+    font-size: 1rem;
+    opacity: 0.8;
+    margin: 0;
+    font-weight: 500;
+  }
+}
+
+.logo-wrapper {
+  background: linear-gradient(135deg, $orange-primary, $orange-dark);
+  padding: 10px;
+  border-radius: 16px;
+  display: inline-flex;
+  margin: 0 auto;
+  box-shadow: 0 6px 12px rgba(230, 92, 0, 0.2);
+
+  img {
+    height: 60px;
+    width: 60px;
+    object-fit: contain;
+  }
+}
+
+.formulario-reserva {
+  .item-formulario {
+    --background: transparent;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    margin-bottom: 24px;
+  }
+
+  .etiqueta {
+    color: $black !important;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+
+    ion-icon {
+      margin-right: 8px;
+      color: $orange-primary;
+    }
+  }
+
+  .input-formulario {
+    background: $gray-light;
+    border-radius: 12px;
+    border: 2px solid darken($gray-light, 5%);
+    padding: 16px !important;
+    color: $black;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    width: 100%;
+
+    &:focus {
+      border-color: $orange-primary;
+      background: lighten($orange-primary, 40%);
+      box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.2);
+    }
+  }
+.select-formulario{
+    background: $gray-light;
+    border-radius: 12px;
+    border: 2px solid darken($gray-light, 5%);
+    padding-left: 16px !important;
+    color: $black;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    width: 100%;
+
+    &:focus {
+      border-color: $orange-primary;
+      background: lighten($orange-primary, 40%);
+      box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.2);
+    }
+  }
+
+}
+
+
+.boton-reservar {
+  --background: #{$orange-primary};
+  --background-activated: #{$orange-dark};
+  --color: #{$white};
+  --box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+  --border-radius: 12px;
+  font-weight: 600;
+  height: 50px;
+  margin-top: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.item-cargando {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  margin-top: 16px;
+  background: rgba($orange-primary, 0.1);
+  border-radius: 12px;
+  
+  ion-spinner {
+    margin-right: 16px;
+    --color: #{$orange-primary};
+  }
+  
+  ion-label {
+    color: $black;
+    font-weight: 500;
+  }
+}
+
+.lista-mesas {
+  margin-top: 32px;
+  overflow-y: auto;
+  height: 49%;
+  
+  .list-header {
+    color: $orange-primary;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    
+    .icon-header {
+      margin-right: 8px;
+    }
+  }
+}
+
+.mesa-card {
+  background: #f5cf8d;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  .mesa-info {
+    flex: 1;
+  }
+  
+  .mesa-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    
+    h3 {
+      margin: 0;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: $black;
+    }
+    
+    .mesa-tipo {
+      margin-left: 12px;
+      background: rgba($orange-primary, 0.2);
+      color: $orange-dark;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+  }
+  
+  .mesa-details {
+    display: flex;
+    
+    .detail-item {
+      display: flex;
+      align-items: center;
+      margin-right: 16px;
+      color: darken($gray-light, 50%);
+      font-size: 0.9rem;
+      
+      ion-icon {
+        margin-right: 4px;
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+.no-data {
+  text-align: center;
+  padding: 32px 0;
+  color: darken($gray-light, 40%);
+  
+  .icon-sad {
+    font-size: 2.5rem;
+    color: $orange-primary;
+    margin-bottom: 16px;
+  }
+  
+  p {
+    margin: 4px 0;
+  }
+}
+
+/* Estilos para el toolbar */
+.toolbar-reserva {
+  --background: #{$orange-primary};
+  --color: #{$white};
+  --border-width: 0;
+}
+
+/* En tu reservas.page.scss (o archivo global si lo prefieres) */
+
+.select-formulario {
+  width: 100%;
+  /* elimina padding predeterminado */
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+/* El part “text” es justo el contenedor donde Ionic dibuja la etiqueta elegida */
+.select-formulario::part(text) {
+  text-align: center;
+  /* opcional: si quieres que ocupe todo el ancho */
+  width: 100%;
+}
+
+.item-formulario {
+  display: flex;            /* convierte en flex container */
+  flex-direction: column;   /* apila label y control verticalmente */
+  align-items: center;      /* centra todo el contenido horizontalmente */
+}
+
+.select-formulario {
+  width: 80%;               /* o el ancho que necesites */
+}

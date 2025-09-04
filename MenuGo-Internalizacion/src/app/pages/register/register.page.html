@@ -1,0 +1,148 @@
+<ion-content [fullscreen]="true" class="register-content">
+  <div class="background-pattern"></div>
+
+  <div *ngIf="isLoading" class="div-spinner">
+    <ion-spinner name="circular" class="spinner-register"></ion-spinner>
+  </div>
+
+  <div class="mapa-modal" *ngIf="mapVisible">
+    <div class="modal-backdrop" (click)="mapVisible = false"></div>
+    <div class="modal-content">
+      <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+      </app-mapaidioma>
+    </div>
+  </div>
+
+  <div class="register-container" *ngIf="screen == 'signin'">
+    <div class="language-flag" (click)="mapVisible = true">
+      <img [src]="'assets/flags/' + currentLang + '.png'" [alt]="currentLang" />
+    </div>
+    <div class="card-container">
+      <div class="encabezado">
+        <h1 class="titulo">{{ textos[currentLang].titulo }}</h1>
+        <!-- <p class="subtitulo">Creá tu cuenta en MenúGo</p> -->
+      </div>
+
+      <form [formGroup]="formData" class="formulario">
+        <!-- Nombre -->
+        <div class="form-group">
+          <ion-label position="stacked" class="etiqueta">{{ textos[currentLang].nombre }}</ion-label>
+          <ion-item lines="none" class="item-formulario">
+            <ion-input formControlName="nombre" type="text" placeholder="{{ textos[currentLang].placeholderNombre }}" class="input-register"
+              [class.invalid]="nombre?.invalid && (nombre?.touched || formSubmitted)"></ion-input>
+            <ion-icon name="person" slot="start" class="input-icon"></ion-icon>
+          </ion-item>
+          <div *ngIf="nombre?.invalid && (nombre?.touched || formSubmitted)" class="error-message">
+            <ion-text color="danger">{{ nombreError }}</ion-text>
+          </div>
+        </div>
+
+        <!-- Apellido -->
+        <div class="form-group">
+          <ion-label position="stacked" class="etiqueta">{{ textos[currentLang].apellido }}</ion-label>
+          <ion-item lines="none" class="item-formulario">
+            <ion-input formControlName="apellido" type="text" placeholder="{{ textos[currentLang].placeholderApellido }}" class="input-register"
+              [class.invalid]="apellido?.invalid && (apellido?.touched || formSubmitted)"></ion-input>
+            <ion-icon name="people" slot="start" class="input-icon"></ion-icon>
+          </ion-item>
+          <div *ngIf="apellido?.invalid && (apellido?.touched || formSubmitted)" class="error-message">
+            <ion-text color="danger">{{ apellidoError }}</ion-text>
+          </div>
+        </div>
+
+        <!-- DNI -->
+        <div class="form-group">
+          <ion-label position="stacked" class="etiqueta">{{ textos[currentLang].dni }}</ion-label>
+          <ion-item lines="none" class="item-formulario">
+            <ion-input formControlName="dni" type="text" placeholder="{{ textos[currentLang].placeholderDni }}" class="input-register"
+              [class.invalid]="dni?.invalid && (dni?.touched || formSubmitted)"></ion-input>
+            <ion-icon name="id-card" slot="start" class="input-icon"></ion-icon>
+          </ion-item>
+          <div *ngIf="dni?.invalid && (dni?.touched || formSubmitted)" class="error-message">
+            <ion-text color="danger">{{ dniError }}</ion-text>
+          </div>
+        </div>
+
+        <!-- Foto de perfil -->
+        <div class="photo-section">
+          <ion-label position="stacked" class="etiqueta">{{ textos[currentLang].fotoPerfil }}</ion-label>
+          <div class="photo-box" (click)="takePhoto()"
+            [class.invalid]="foto?.invalid && (foto?.touched || formSubmitted)">
+            <img *ngIf="photoPreview; else cameraIcon" [src]="photoPreview" />
+            <ng-template #cameraIcon>
+              <div class="camera-icon-container">
+                <ion-icon name="camera" class="camera-icon"></ion-icon>
+                <div class="photo-label">{{ textos[currentLang].agregarFoto }}</div>
+              </div>
+            </ng-template>
+          </div>
+          <div *ngIf="foto?.invalid && (foto?.touched || formSubmitted)" class="error-message"
+            style="text-align: center;">
+            <ion-text color="danger">{{ fotoError }}</ion-text>
+          </div>
+        </div>
+
+        <!-- Botón Escanear DNI -->
+        <ion-button expand="block" fill="outline" class="btn-escanear" (click)="scan()" [disabled]="isScanning">
+          <ion-icon name="scan" slot="start"></ion-icon>
+          {{ textos[currentLang].escanearDni }}
+        </ion-button>
+
+        <div *ngIf="qrResult" class="qr-result">
+          <ion-item lines="none">
+            <ion-label position="stacked">{{ textos[currentLang].resultadoQr }}</ion-label>
+            <ion-input [value]="qrResult" readonly class="input-register"></ion-input>
+          </ion-item>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <ion-label position="stacked" class="etiqueta">{{ textos[currentLang].correo }}</ion-label>
+          <ion-item lines="none" class="item-formulario">
+            <ion-input formControlName="email" type="email" placeholder="{{ textos[currentLang].placeholderCorreo }}" class="input-register"
+              [class.invalid]="email?.invalid && (email?.touched || formSubmitted)"></ion-input>
+            <ion-icon name="mail" slot="start" class="input-icon"></ion-icon>
+          </ion-item>
+          <div *ngIf="email?.invalid && (email?.touched || formSubmitted)" class="error-message">
+            <ion-text color="danger">{{ emailError }}</ion-text>
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-group">
+          <ion-label position="stacked" class="etiqueta">{{ textos[currentLang].contrasena }}</ion-label>
+          <ion-item lines="none" class="item-formulario">
+            <ion-input formControlName="password" type="password" placeholder="{{ textos[currentLang].contrasena }}" class="input-register"
+              [class.invalid]="password?.invalid && (password?.touched || formSubmitted)"></ion-input>
+            <ion-icon name="lock-closed" slot="start" class="input-icon"></ion-icon>
+          </ion-item>
+          <div *ngIf="password?.invalid && (password?.touched || formSubmitted)" class="error-message">
+            <ion-text color="danger">{{ passwordError }}</ion-text>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <ion-label position="stacked" class="etiqueta">{{ textos[currentLang].repetirContrasena }}</ion-label>
+          <ion-item lines="none" class="item-formulario">
+            <ion-input type="password" placeholder="{{ textos[currentLang].repetirContrasena }}" class="input-register"
+              [class.invalid]="password?.invalid && (password?.touched || formSubmitted)"></ion-input>
+            <ion-icon name="lock-closed" slot="start" class="input-icon"></ion-icon>
+          </ion-item>
+          <div *ngIf="password?.invalid && (password?.touched || formSubmitted)" class="error-message">
+            <ion-text color="danger">{{ passwordError }}</ion-text>
+          </div>
+        </div>
+
+        <!-- Botón de envío -->
+        <ion-button class="boton-register" (click)="register()" expand="block" [disabled]="isLoading">
+          <ion-icon name="person-add" slot="start"></ion-icon>
+          {{ textos[currentLang].registrar }}
+        </ion-button>
+
+        <div *ngIf="errorLogin" class="error-message" style="text-align: center; margin-top: 15px;">
+          <ion-text color="danger">{{ textos[currentLang].errors[errorText] }}</ion-text>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-title>{{ textos[currentLang].header }}</ion-title>
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="modal-content">
+  <div class="resultado-container">
+
+    <div class="mapa-modal" *ngIf="mapVisible">
+      <div class="modal-backdrop" (click)="mapVisible = false"></div>
+      <div class="modal-content">
+        <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+        </app-mapaidioma>
+      </div>
+    </div>
+    <div class="mensaje">
+      <ion-icon [name]="getResultado() === 'correcta' ? 'checkmark-circle' : 'close-circle'"
+        [color]="getResultado() === 'correcta' ? 'success' : 'danger'"></ion-icon>
+      <h2>{{ getMensaje() }}</h2>
+    </div>
+
+    <div class="cartas-comparacion">
+      <div class="carta-comparacion">
+        <div class="carta-label">{{ textos[currentLang].previousCard }}</div>
+        <div class="carta-valor">{{ cartaAnterior }}</div>
+      </div>
+
+      <div class="vs-container">
+        <div class="vs-circle">VS</div>
+      </div>
+
+      <div class="carta-comparacion">
+        <div class="carta-label">{{ textos[currentLang].nextCard }}</div>
+        <div class="carta-valor">{{ siguienteCarta }}</div>
+      </div>
+    </div>
+
+    <div class="eleccion-container">
+      <div class="eleccion-label">{{ textos[currentLang].yourChoice }}</div>
+      <div class="eleccion-badge" [class.correcta]="getResultado() === 'correcta'"
+        [class.incorrecta]="getResultado() === 'incorrecta'">
+        {{ opcion === 'mayor' ? textos[currentLang].higher : textos[currentLang].lower }}
+      </div>
+    </div>
+
+    <div class="explicacion">
+      <p *ngIf="getResultado() === 'correcta'">
+        {{ textos[currentLang].explanation.correct }}
+      </p>
+      <p *ngIf="getResultado() === 'incorrecta'">
+          {{
+            textos[currentLang].explanation.incorrect
+              .replace('{comp}', siguienteCarta > cartaAnterior ? textos[currentLang].higher.toLowerCase() : textos[currentLang].lower.toLowerCase())
+              .replace('{prev}', cartaAnterior)
+          }}
+      </p>
+    </div>
+
+    <ion-button expand="block" color="primary" (click)="cerrar()">
+      {{ textos[currentLang].continue }}
+    </ion-button>
+  </div>
+</ion-content>

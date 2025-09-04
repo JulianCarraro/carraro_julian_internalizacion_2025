@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar class="toolbar-financiero header-toolbar" style="--background: #f4c060;">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/homeadmin"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ textos[currentLang].titulo }}</ion-title>
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+      <ion-button (click)="logOut()">
+        <ion-icon name="log-out" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="fondo-financiero">
+  <div class="div-spinner" *ngIf="isLoading">
+    <ion-spinner name="circular" class="spinner-financiero"></ion-spinner>
+  </div>
+
+  <div class="mapa-modal" *ngIf="mapVisible">
+    <div class="modal-backdrop" (click)="mapVisible = false"></div>
+    <div class="modal-content">
+      <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+      </app-mapaidioma>
+    </div>
+  </div>
+
+  <swiper-container *ngIf="!isLoading" class="user-swiper" [slides-per-view]="1" [pagination]="{ clickable: true }"
+    [navigation]="false" style="width:100%; height:100%">
+    <swiper-slide *ngFor="let reserva of reservas" style="display: flex; align-items: center;">
+      <ion-card class="user-card">
+        <ion-card-header
+          style="text-align: center !important; font-size: 2rem !important; font-weight: bold !important;">
+          <ion-avatar class="user-avatar">
+            <img [src]="reserva.cliente.foto" [alt]="textos[currentLang].altAvatar + ' ' + reserva.cliente.nombre" />
+          </ion-avatar>
+          <ion-card-title>
+            {{ reserva.cliente.nombre }} <br> {{ reserva.cliente.apellido }}
+          </ion-card-title>
+          <ion-card-subtitle>
+            {{ reserva.cliente.email }}
+          </ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content class="card-content--center">
+          <p>
+            <strong>{{ textos[currentLang].reservado }}:</strong>
+            {{ reserva.startTime | date:'medium' }}
+          </p>
+        </ion-card-content>
+        <div class="action-buttons" style="height: 90px;">
+          <ion-button shape="round" fill="solid" color="success"
+            (click)="cambiarEstadoReserva(reserva.id, 'activa', reserva.cliente.id, 'con reserva')">
+            <ion-icon slot="icon-only" [icon]="checkIcon"></ion-icon>
+          </ion-button>
+          <ion-button shape="round" fill="solid" color="danger"
+            (click)="cambiarEstadoReserva(reserva.id, 'rechazada', reserva.cliente.id, 'aprobado')">
+            <ion-icon slot="icon-only" [icon]="closeIcon"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card>
+    </swiper-slide>
+  </swiper-container>
+
+
+</ion-content>

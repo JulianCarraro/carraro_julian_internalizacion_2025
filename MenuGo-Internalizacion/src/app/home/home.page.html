@@ -1,0 +1,43 @@
+<ion-content class="welcome-content" fullscreen>
+
+  <div class="card-container">
+
+    <div class="language-flag" (click)="mapVisible = true">
+      <img [src]="'assets/flags/' + currentLang + '.svg'" [alt]="currentLang" />
+    </div>
+
+    <div class="mapa-modal" *ngIf="mapVisible">
+      <div class="modal-backdrop" (click)="mapVisible = false"></div>
+      <div class="modal-content">
+        <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+        </app-mapaidioma>
+      </div>
+    </div>
+    <div class="header">
+      <div class="logo-wrapper">
+        <img src="assets/logoApp.png" alt="Menú Go Logo" />
+      </div>
+
+      <div class="titles">
+        <p class="subtitulo">{{ textos[currentLang].subtitulo }}</p>
+        <h1 class="nombre-app">{{ textos[currentLang].titulo }}</h1>
+      </div>
+    </div>
+
+    <div class="flecha-css"></div>
+
+    <div class="botones-wrapper">
+      <ion-button fill="solid" class="btn-crear" (click)="crearUsuario()" expand="block">
+        {{ textos[currentLang].crearUsuario }}
+      </ion-button>
+
+      <ion-button fill="outline" class="btn-iniciar" (click)="iniciarSesion()" expand="block">
+        {{ textos[currentLang].iniciarSesion }}
+      </ion-button>
+
+      <ion-button fill="outline" class="btn-anonimo" (click)="accesoAnonimo()" expand="block">
+        {{ textos[currentLang].anonimo }}
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

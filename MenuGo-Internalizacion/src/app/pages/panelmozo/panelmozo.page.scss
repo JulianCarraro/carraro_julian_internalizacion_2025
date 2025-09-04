@@ -1,0 +1,436 @@
+/* Estilo Finanzas Personales */
+.fondo-financiero {
+  --background: #f1e2c9;
+  position: relative;
+}
+
+.grafico-fondo {
+  position: absolute;
+  width: 100%;
+  height: 40%;
+  opacity: 0.1;
+}
+
+.tarjeta-login {
+  background: rgba(255, 255, 255, 0);
+  //   border-radius: 20px;
+  //   margin: 2rem;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.encabezado {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  .logo {
+    width: 80px;
+    margin-bottom: 1rem;
+  }
+
+  .titulo {
+    color: #0d1218;
+    font-size: 1.8rem;
+    margin: 0.5rem 0;
+    font-weight: 600;
+  }
+
+  .subtitulo {
+    color: #cecece;
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+
+.spinner-financiero {
+  width: 50px;
+  height: 50px;
+  --color: #FF6600;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: transparent;
+
+  animation: spin 1s linear infinite;
+}
+
+.div-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+
+.consulta-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+}
+
+.consulta-container {
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slider-consultas {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.consulta-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.consulta-header {
+  background: #3880ff;
+  color: white;
+  padding: 16px;
+  text-align: center;
+  position: relative;
+}
+
+.mesa-badge {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #eb445a;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.nombre-cliente {
+  font-size: 1.2rem;
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
+.consulta-body {
+  padding: 16px;
+}
+
+.fecha-consulta {
+  color: #666;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.mensaje-consulta {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #3880ff;
+}
+
+.respuesta-container {
+  margin-top: 20px;
+}
+
+.respuesta-textarea {
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.actions {
+  padding: 0 16px 16px;
+}
+
+.responder-btn,
+.enviar-btn {
+  --border-radius: 8px;
+}
+
+.arrow-btn {
+  background: transparent;
+  color: white;
+  font-size: 24px;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn {
+  --color: white;
+  margin-top: 16px;
+}
+
+.empty-state {
+  background: rgba(255, 255, 255, 0);
+  border-radius: 16px;
+  padding: 32px 24px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.empty-state-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.empty-icon {
+  font-size: 64px;
+  color: #2dd36f;
+  margin-bottom: 16px;
+}
+
+.empty-title {
+  color: #2dd36f;
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.empty-message {
+  color: #666;
+  margin: 0 0 24px 0;
+  font-size: 1rem;
+}
+
+.empty-btn {
+  --border-radius: 8px;
+  --background: #2dd36f;
+  --color: white;
+  max-width: 200px;
+}
+
+.item-pedido-flat {
+  border-bottom: 1px solid #ccc;
+  --background: #fefefe00;
+  padding: 10px 14px;
+}
+
+.pedido-encabezado {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #3b3b3b;
+}
+
+.pedido-nombre {
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 4px;
+  color: #2c3e50;
+}
+
+.pedido-productos,
+.pedido-total {
+  font-size: 1.2rem;
+  ;
+  color: #666;
+  margin-top: 2px;
+}
+
+.pedido-estados {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+
+  ion-badge {
+    font-size: 1.5rem;
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background-color: white;
+  width: 100%;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  height: 80%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.consulta-info {
+  padding: 10px;
+  background-color: #f9f9f9;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #333;
+}
+
+ion-textarea {
+  margin-bottom: 15px;
+  background-color: rgb(196, 196, 196);
+  border: 1px solid black;
+}
+
+ion-button {
+  margin-top: 10px;
+}
+
+.action-buttons {
+  display: grid;
+  gap: 8px;
+
+  ion-icon {
+    width: 110px;
+    height: 70px;
+  }
+
+}
+
+.action-buttons ion-button {
+  --min-width: 36px;
+  --height: 36px;
+  padding: 0;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background: #ffffff00;
+}
+
+.sin-tareas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 110px 20px;
+  text-align: center;
+}
+
+.texto-sin-tareas {
+  color: #7a7a7a;
+  font-size: 14px;
+  margin: 0;
+}
+
+ion-segment-button.segment-large {
+  flex: 1.2 !important;
+}
+
+ion-segment-button.segment-small {
+  flex: 1 !important;
+}
+
+
+.badge-notificacion {
+  position: absolute;
+  top: 2px;
+  right: 11px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  font-weight: bold;
+}
+
+ion-item {
+  --inner-padding-start: 16px;
+  --inner-padding-end: 16px;
+  --min-height: 80px;
+}
+
+ion-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 12px;
+}
+
+ion-label h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #0d1218;
+}
+
+ion-label p {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.mapa-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  height: 36%;
+  overflow: hidden;
+  z-index: 1001;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}

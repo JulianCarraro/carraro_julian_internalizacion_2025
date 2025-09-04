@@ -1,0 +1,192 @@
+<ion-header>
+  <ion-toolbar class="toolbar-financiero header-toolbar" style="--background: #f4c060;">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/homeempleados"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ textos[currentLang].header }}</ion-title>
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+      <ion-button (click)="logOut()">
+        <ion-icon name="log-out" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div class="div-spinner" *ngIf="isLoading">
+  <ion-spinner name="circular" class="spinner-financiero"></ion-spinner>
+</div>
+
+<ion-content [fullscreen]="true" class="fondo-financiero">
+  <!-- Spinner mientras carga -->
+
+  <ng-container *ngIf="!isLoading">
+    <div class="login" style="width: 100%; height: 100%;">
+      <div class="tarjeta-login">
+
+        <div class="mapa-modal" *ngIf="mapVisible">
+          <div class="modal-backdrop" (click)="mapVisible = false"></div>
+          <div class="modal-content">
+            <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+            </app-mapaidioma>
+          </div>
+        </div>
+        <div class="encabezado">
+          <h1 class="titulo">{{ textos[currentLang].header }}</h1>
+          <p class="subtitulo">{{ textos[currentLang].subtitulo(userData?.nombre) }}</p>
+        </div>
+
+        <ion-segment (ionChange)="onEstadoChange($event)" [value]="this.estadoSeleccionado" color="tertiary">
+          <ion-segment-button value="pendiente">{{ textos[currentLang].segmentos.pendiente }}</ion-segment-button>
+          <ion-segment-button value="en preparacion">{{ textos[currentLang].segmentos.enPrep }}</ion-segment-button>
+        </ion-segment>
+
+        <!-- Lista de tareas -->
+        <ion-list lines="none" *ngIf="tasksByMesa.length > 0; else noTasks" class="lista-tareas">
+          <ng-container *ngFor="let group of tasksByMesa">
+            <h2 class="mesa-titulo">{{ textos[currentLang].tarjeta.mesa }} {{ group.mesaNumero }}</h2>
+            <ion-item *ngFor="let task of group.tasks" class="item-tarea">
+              <ion-label class="contenido-tarea">
+                <h2 class="numero-tarea">{{ textos[currentLang].tarjeta.tarea }} #{{ task.nroDeTarea }}</h2>
+                <p class="producto-titulo">{{ textos[currentLang].tarjeta.producto }}</p>
+                <p class="descripcion-producto">{{ task.producto?.descripcion }}</p>
+
+                <div class="estado-container">
+                  <ion-badge [class]="'estado-badge estado-' + task.estado.toLowerCase().replace(' ', '-')">
+                    {{ textos[currentLang].tarjeta.estados[task.estado === 'pendiente' ? 'pendiente' : 'enPrep'] }}
+                  </ion-badge>
+                  <p class="eta-tarea" *ngIf="task.eta">{{ textos[currentLang].tarjeta.eta }}: {{ task.eta | date:'shortTime' }}</p>
+                </div>
+              </ion-label>
+
+              <div class="acciones-tarea">
+                <ion-button *ngIf="task.estado === 'pendiente'" (click)="tomarPedido(task)" color="warning"
+                  class="boton-accion" fill="solid">
+                  <ion-icon slot="icon-only" [icon]="checkIcon"></ion-icon>
+                </ion-button>
+
+                <ion-button *ngIf="task.estado === 'en preparacion'" (click)="marcarListo(task)" color="success"
+                  class="boton-accion" fill="solid">
+                  <ion-icon slot="icon-only" [icon]="checkIcon"></ion-icon>
+                </ion-button>
+              </div>
+            </ion-item>
+
+          </ng-container>
+
+        </ion-list>
+
+        <!-- Mensaje si no hay tareas -->
+        <ng-template #noTasks>
+          <div class="sin-tareas">
+            <div class="empty-state">
+              <div class="empty-state-content">
+                <ion-icon name="checkmark-done-circle-outline" class="empty-icon"></ion-icon>
+                <h3 class="empty-title">{{ textos[currentLang].empty.titulo }}</h3>
+                <p class="empty-message">{{ textos[currentLang].empty.mensaje }}</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </ng-container>
+</ion-content>
+
+
+
+
+
+
+
+
+
+<!-- <ion-header>
+  <ion-toolbar class="toolbar-financiero header-toolbar" style="--background: #f4c060;">
+    <ion-title>Pedidos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logOut()">
+        <ion-icon name="log-out" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="fondo-financiero">
+ 
+  <div class="div-spinner" *ngIf="isLoading">
+    <ion-spinner name="circular" class="spinner-financiero"></ion-spinner>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <div class="login" style="width: 100%; height: 100%;">
+      <div class="tarjeta-login">
+        <div class="encabezado">
+          <h1 class="titulo">Pedidos</h1>
+          <p class="subtitulo">Hola, {{ userData.nombre }}. Aquí están tus tareas pendientes:</p>
+        </div>
+
+        <ion-segment (ionChange)="onEstadoChange($event)" value="pendiente" color="tertiary">
+          <ion-segment-button value="pendiente">Pendiente</ion-segment-button>
+          <ion-segment-button value="en preparacion">En preparación</ion-segment-button>
+        </ion-segment>
+
+        <ion-list lines="none" *ngIf="tareasFiltradas()?.length; else noTasks" class="lista-tareas">
+          <ion-item *ngFor="let task of tareasFiltradas()" class="item-tarea">
+            <ion-label class="contenido-tarea">
+              <h2 class="numero-tarea">Tarea #{{ task.nroDeTarea }}</h2>
+              <p class="producto-titulo">Producto</p>
+              <p class="descripcion-producto">{{ task.producto?.descripcion }}</p>
+              
+              <div class="estado-container">
+                <ion-badge [class]="'estado-badge estado-' + task.estado.toLowerCase().replace(' ', '-')">
+                  {{ task.estado }}
+                </ion-badge>
+                <p class="eta-tarea" *ngIf="task.eta">ETA: {{ task.eta | date:'shortTime' }}</p>
+              </div>
+            </ion-label>
+
+            <div class="acciones-tarea">
+              <ion-button
+                *ngIf="task.estado === 'pendiente'"
+                (click)="tomarPedido(task)"
+                color="warning"
+                class="boton-accion"
+                fill="solid"
+              >
+                Tomar pedido
+              </ion-button>
+
+              <ion-button
+                *ngIf="task.estado === 'en preparacion'"
+                (click)="marcarListo(task)"
+                color="success"
+                class="boton-accion"
+                fill="solid"
+              >
+                Marcar listo
+              </ion-button>
+            </div>
+          </ion-item>
+        </ion-list>
+
+      
+        <ng-template #noTasks>
+          <div class="sin-tareas">
+            <div class="empty-state">
+              <div class="empty-state-content">
+                <ion-icon name="checkmark-done-circle-outline" class="empty-icon"></ion-icon>
+                <h3 class="empty-title">¡Todo al día!</h3>
+                <p class="empty-message">No hay pedidos pendientes para tu sector.</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </ng-container>
+</ion-content> -->

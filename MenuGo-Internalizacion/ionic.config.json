@@ -1,0 +1,13 @@
+{
+  "name": "MenúGo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://192.168.0.213:3000"
+    }
+  ]
+}

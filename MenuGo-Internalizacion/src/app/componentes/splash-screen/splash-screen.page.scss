@@ -1,0 +1,217 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  background: #f1e2c9; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+/* Burbujas animadas */
+.bubbles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  animation: float 15s infinite linear;
+  opacity: 0.7;
+  
+  /* Tamaños aleatorios se generarán desde TypeScript */
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(100vh) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-20vh) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* 2) Contenedor y animación de salida */
+.splash-container {
+  text-align: center;
+  opacity: 1;
+  position: relative;
+  z-index: 10;
+}
+.splash-container.animated {
+  animation: fade-out-up 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  animation-delay: 2.2s;
+}
+
+/* 3) Logo con efecto de onda */
+.logo-container {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 2rem;
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  position: relative;
+  z-index: 2;
+  box-shadow: 
+    0 5px 15px rgba(0, 0, 0, 0.1),
+    0 0 0 10px rgba(255, 255, 255, 0.3);
+  animation: logo-float 3s ease-in-out infinite;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: logo-appear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+}
+
+.wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  animation: wave-pulse 2s ease-out infinite;
+  z-index: 1;
+  opacity: 0;
+  animation-delay: 0.5s;
+}
+
+/* 4) Texto con animación de escritura */
+.text-group {
+  opacity: 0;
+  animation: text-appear 0.8s ease-out forwards;
+  animation-delay: 1s;
+}
+
+.student-name {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin: 0;
+  line-height: 1.3;
+  font-weight: 900;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.last-name {
+  font-size: 1.2em;
+  animation: slide-in-left 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) 1.2s forwards;
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.first-name {
+  font-size: 0.9em;
+  color: #e74c3c;
+  animation: slide-in-right 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) 1.4s forwards;
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.division-container {
+  margin-top: 1.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.division {
+  font-size: 1.4rem;
+  color: #2c3e50;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  padding: 0.5rem 1.5rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 30px;
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: fade-in-up 0.6s ease-out 1.6s forwards;
+  transform: translateY(20px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.division-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(44, 62, 80, 0);
+  z-index: 1;
+}
+
+/* === Keyframes === */
+
+/* Logo aparece con efecto rebote */
+@keyframes logo-appear {
+  0%   { opacity: 0; transform: scale(0.8); }
+  60%  { opacity: 1; transform: scale(1.1); }
+  80%  { transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Logo flota suavemente */
+@keyframes logo-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Onda pulsante */
+@keyframes wave-pulse {
+  0%   { opacity: 0.5; transform: scale(1); }
+  50%  { opacity: 0.8; transform: scale(1.2); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+/* Texto aparece */
+@keyframes text-appear {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Deslizamiento desde izquierda */
+@keyframes slide-in-left {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Deslizamiento desde derecha */
+@keyframes slide-in-right {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Aparece desde abajo */
+@keyframes fade-in-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Contenedor sale hacia arriba */
+@keyframes fade-out-up {
+  to { opacity: 0; transform: translateY(-50px); }
+}

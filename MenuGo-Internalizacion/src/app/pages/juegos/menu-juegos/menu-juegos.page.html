@@ -1,0 +1,114 @@
+<ion-header>
+  <ion-toolbar style="--background: #f4c060;">
+    <ion-title>{{ textos[currentLang].header }}</ion-title>
+    <ion-buttons (click)="back()" slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <div class="language-flag" (click)="mapVisible = true">
+         <img [src]="'assets/flags/' + currentLang + '.svg'" style="width: 36px;
+    height: 30px;
+    border-radius: 4px;" [alt]="currentLang" />
+      </div>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="quiz-content">
+  <div class="header-container">
+    <h1>{{ textos[currentLang].title }}</h1>
+  </div>
+
+  <div class="mapa-modal" *ngIf="mapVisible">
+    <div class="modal-backdrop" (click)="mapVisible = false"></div>
+    <div class="modal-content">
+      <app-mapaidioma (idiomaSeleccionado)="cambiarIdioma($event)" (cerrar)="mapVisible = false">
+      </app-mapaidioma>
+    </div>
+  </div>
+
+  <div class="games-container">
+    <!-- Tarjeta para Mayor o Menor -->
+    <ion-card class="game-card" routerLink="/mayor-menor">
+      <div class="card-header mayor-menor">
+        <ion-icon name="trending-up-outline"></ion-icon>
+        <h2>{{ textos[currentLang].games.mayorMenor.title }}</h2>
+      </div>
+      <ion-card-content>
+        <!-- <p>Adivina si la siguiente carta será mayor o menor. Acerta 5 veces seguidas para ganar un descuento del 10%.
+        </p> -->
+
+        <div class="game-stats">
+          <div class="stat">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ textos[currentLang].games.mayorMenor.fast }}</span>
+          </div>
+          <div class="stat">
+            <ion-icon name="trophy-outline"></ion-icon>
+            <span>{{ textos[currentLang].games.mayorMenor.discount }}</span>
+          </div>
+        </div>
+
+        <ion-button expand="block" color="success" (click)="mayorMenor()">
+          <ion-icon name="play" slot="start"></ion-icon>
+          {{ textos[currentLang].games.mayorMenor.playNow }}
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Tarjeta para Quiz del Restaurante -->
+    <ion-card class="game-card" routerLink="/quiz">
+      <div class="card-header quiz">
+        <ion-icon name="restaurant-outline"></ion-icon>
+        <h2>{{ textos[currentLang].games.quiz.title }}</h2>
+      </div>
+      <ion-card-content>
+        <!-- <p>Responde preguntas sobre nuestro restaurante contra reloj. Gana un descuento del 15% con 8 aciertos.</p> -->
+
+        <div class="game-stats">
+          <div class="stat">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ textos[currentLang].games.quiz.fast }}</span>
+          </div>
+          <div class="stat">
+            <ion-icon name="trophy-outline"></ion-icon>
+            <span>{{ textos[currentLang].games.quiz.discount }}</span>
+          </div>
+        </div>
+
+        <ion-button expand="block" color="warning" (click)="quiz()">
+          <ion-icon name="play" slot="start"></ion-icon>
+          {{ textos[currentLang].games.quiz.playNow }}
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- <div class="info-section">
+    <h2>¿Cómo funcionan los descuentos?</h2>
+    <ion-list>
+      <ion-item>
+        <ion-icon slot="start" name="pricetag-outline" color="success"></ion-icon>
+        <ion-label>
+          <h3>Descuentos válidos por 30 días</h3>
+          <p>Usa tu código antes de que expire</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon slot="start" name="restaurant-outline" color="primary"></ion-icon>
+        <ion-label>
+          <h3>Válido para consumo en el local</h3>
+          <p>Aplica en todas nuestras sucursales</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon slot="start" name="people-outline" color="warning"></ion-icon>
+        <ion-label>
+          <h3>Un descuento por mesa</h3>
+          <p>No acumulable con otras promociones</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div> -->
+</ion-content>
